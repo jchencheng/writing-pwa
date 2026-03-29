@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>存储修复测试</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+    .success { background-color: #d4edda; border-color: #c3e6cb; }
+    .error { background-color: #f8d7da; border-color: #f5c6cb; }
+    button { padding: 10px 15px; margin: 5px; cursor: pointer; }
+    pre { background: #f5f5f5; padding: 10px; border-radius: 3px; overflow-x: auto; }
+  </style>
+</head>
+<body>
+  <h1>存储修复测试</h1>
+  
+  <div class="test-section">
+    <h2>1. 保存测试数据</h2>
+    <button onclick="saveTestData()">保存测试数据</button>
+    <pre id="save-result"></pre>
+  </div>
+  
+  <div class="test-section">
+    <h2>2. 查看存储内容</h2>
+    <button onclick="viewStorage()">查看存储内容</button>
+    <pre id="storage-content"></pre>
+  </div>
+  
+  <div class="test-section">
+    <h2>3. 模拟页面重新加载</h2>
+    <button onclick="simulateReload()">模拟重新加载</button>
+    <pre id="reload-result"></pre>
+  </div>
+  
+  <div class="test-section">
+    <h2>4. 清除存储</h2>
+    <button onclick="clearStorage()">清除存储</button>
+    <pre id="clear-result"></pre>
+  </div>
+
+  <script>
+    // 存储键名
+    const STORAGE_KEYS = {
+      PROGRESS: 'writingPractice_progress',
+      ERROR_BOOK: 'writingPractice_errorBook',
+      LAST_PRACTICED_UNIT: 'writingPractice_lastPracticedUnitId',
+      PRACTICE_POSITIONS: 'writingPractice_positions'
+    };
+    
+    // 测试数据
+    const testData = {
+      progress: { 'unit1': 0.8, 'unit2': 0.5 },
+      errorBook: [
+        {
+          unitId: 'unit1',
+          practiceId: 'practice1',
+          blankIndex: 0,
+          userAnswer: 'wrong',
+          correctAnswer: 'correct',
+          isCorrect: false,
+          question: 'This is a [ ] question',
+          explanation: 'Explanation for the question'
+        }
+      ],
+      lastPracticedUnitId: 'unit1',
+      practicePositions: { 'unit1': 3, 'unit2': 0 }
+    };
+    
+    function saveTestData() {
+      const result = document.getElementById('save-result');
+      let output = '=== 保存测试数据 ===\n';
+      
+      try {
+        // 保存数据到localStorage
+        localStorage.setItem(STORAGE_KEYS.PROGRESS, JSON.stringify(testData.progress));
+        localStorage.setItem(STORAGE_KEYS.ERROR_BOOK, JSON.stringify(testData.errorBook));
+        localStorage.setItem(STORAGE_KEYS.LAST_PRACTICED_UNIT, testData.lastPracticedUnitId);
+        localStorage.setItem(STORAGE_KEYS.PRACTICE_POSITIONS, JSON.stringify(testData.practicePositions));
+        
+        // 同时保存到sessionStorage
+        sessionStorage.setItem(STORAGE_KEYS.PROGRESS, JSON.stringify(testData.progress));
+        sessionStorage.setItem(STORAGE_KEYS.ERROR_BOOK, JSON.stringify(testData.errorBook));
+        sessionStorage.setItem(STORAGE_KEYS.LAST_PRACTICED_UNIT, testData.lastPracticedUnitId);
+        sessionStorage.setItem(STORAGE_KEYS.PRACTICE_POSITIONS, JSON.stringify(testData.practicePositions));
+        
+        output += '✓ 测试数据保存成功\n';
+        output += 'Progress: ' + JSON.stringify(testData.progress) + '\n';
+        output += 'Error book: ' + JSON.stringify(testData.errorBook) + '\n';
+        output += 'Last practiced unit: ' + testData.lastPracticedUnitId + '\n';
+        output += 'Practice positions: ' + JSON.stringify(testData.practicePositions) + '\n';
+        
+        result.textContent = output;
+        result.parentElement.className = 'test-section success';
+      } catch (error) {
+        result.textContent = `保存失败: ${error.message}`;
+        result.parentElement.className = 'test-section error';
+      }
+    }
+    
+    function viewStorage() {
+      const result = document.getElementById('storage-content');
+      let output = '=== 当前存储内容 ===\n';
+      
+      // 查看localStorage
+      output += '\n1. localStorage:\n';
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        const value = localStorage.getItem(key);
+        output += `Key: ${key}\nValue: ${value}\n\n`;
+      }
+      
+      // 查看sessionStorage
+      output += '\n2. sessionStorage:\n';
+      for (let i = 0; i < sessionStorage.length; i++) {
+        const key = sessionStorage.key(i);
+        const value = sessionStorage.getItem(key);
+        output += `Key: ${key}\nValue: ${value}\n\n`;
+      }
+      
+      result.textContent = output;
+    }
+    
+    function simulateReload() {
+      const result = document.getElementById('reload-result');
+      let output = '=== 模拟页面重新加载 ===\n';
+      
+      try {
+        // 模拟页面重新加载后的数据加载
+        const savedProgress = localStorage.getItem(STORAGE_KEYS.PROGRESS);
+        const savedErrorBook = localStorage.getItem(STORAGE_KEYS.ERROR_BOOK);
+        const savedLastPracticedUnitId = localStorage.getItem(STORAGE_KEYS.LAST_PRACTICED_UNIT);
+        const savedPositions = localStorage.getItem(STORAGE_KEYS.PRACTICE_POSITIONS);
+        
+        output += '✓ 数据加载成功\n';
+        output += 'Progress: ' + (savedProgress ? JSON.parse(savedProgress) : 'null') + '\n';
+        output += 'Error book: ' + (savedErrorBook ? JSON.parse(savedErrorBook) : 'null') + '\n';
+        output += 'Last practiced unit: ' + savedLastPracticedUnitId + '\n';
+        output += 'Practice positions: ' + (savedPositions ? JSON.parse(savedPositions) : 'null') + '\n';
+        
+        // 验证数据一致性
+        const progressMatches = savedProgress && JSON.stringify(JSON.parse(savedProgress)) === JSON.stringify(testData.progress);
+        const errorBookMatches = savedErrorBook && JSON.stringify(JSON.parse(savedErrorBook)) === JSON.stringify(testData.errorBook);
+        const lastPracticedUnitMatches = savedLastPracticedUnitId === testData.lastPracticedUnitId;
+        const positionsMatches = savedPositions && JSON.stringify(JSON.parse(savedPositions)) === JSON.stringify(testData.practicePositions);
+        
+        output += '\n=== 数据一致性验证 ===\n';
+        output += 'Progress matches: ' + progressMatches + '\n';
+        output += 'Error book matches: ' + errorBookMatches + '\n';
+        output += 'Last practiced unit matches: ' + lastPracticedUnitMatches + '\n';
+        output += 'Positions matches: ' + positionsMatches + '\n';
+        
+        if (progressMatches && errorBookMatches && lastPracticedUnitMatches && positionsMatches) {
+          output += '\n✓ 所有数据验证通过！';
+          result.parentElement.className = 'test-section success';
+        } else {
+          output += '\n✗ 数据验证失败！';
+          result.parentElement.className = 'test-section error';
+        }
+        
+        result.textContent = output;
+      } catch (error) {
+        result.textContent = `加载失败: ${error.message}`;
+        result.parentElement.className = 'test-section error';
+      }
+    }
+    
+    function clearStorage() {
+      const result = document.getElementById('clear-result');
+      
+      try {
+        localStorage.clear();
+        sessionStorage.clear();
+        result.textContent = '✓ 存储已清除';
+        result.parentElement.className = 'test-section success';
+      } catch (error) {
+        result.textContent = `清除失败: ${error.message}`;
+        result.parentElement.className = 'test-section error';
+      }
+    }
+    
+    // 页面加载时自动运行测试
+    window.onload = function() {
+      viewStorage();
+    };
+  </script>
+</body>
+</html>

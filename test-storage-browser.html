@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>存储测试</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+    .success { background-color: #d4edda; border-color: #c3e6cb; }
+    .error { background-color: #f8d7da; border-color: #f5c6cb; }
+    button { padding: 10px 15px; margin: 5px; cursor: pointer; }
+    pre { background: #f5f5f5; padding: 10px; border-radius: 3px; overflow-x: auto; }
+  </style>
+</head>
+<body>
+  <h1>存储测试页面</h1>
+  
+  <div class="test-section">
+    <h2>1. 测试存储功能</h2>
+    <button onclick="testStorage()">运行存储测试</button>
+    <pre id="storage-test-result"></pre>
+  </div>
+  
+  <div class="test-section">
+    <h2>2. 查看当前存储内容</h2>
+    <button onclick="viewStorage()">查看存储内容</button>
+    <pre id="storage-content"></pre>
+  </div>
+  
+  <div class="test-section">
+    <h2>3. 测试数据持久化</h2>
+    <button onclick="testPersistence()">测试持久化</button>
+    <pre id="persistence-test-result"></pre>
+  </div>
+  
+  <div class="test-section">
+    <h2>4. 清除存储</h2>
+    <button onclick="clearStorage()">清除所有存储</button>
+    <pre id="clear-result"></pre>
+  </div>
+
+  <script>
+    // 存储键名
+    const STORAGE_KEYS = {
+      PROGRESS: 'writingPractice_progress',
+      ERROR_BOOK: 'writingPractice_errorBook',
+      LAST_PRACTICED_UNIT: 'writingPractice_lastPracticedUnitId',
+      PRACTICE_POSITIONS: 'writingPractice_positions'
+    };
+    
+    // 测试数据
+    const testData = {
+      progress: { 'unit1': 0.5, 'unit2': 0.3 },
+      errorBook: [
+        {
+          unitId: 'unit1',
+          practiceId: 'practice1',
+          blankIndex: 0,
+          userAnswer: 'wrong',
+          correctAnswer: 'correct',
+          isCorrect: false,
+          question: 'This is a [ ] question',
+          explanation: 'Explanation for the question'
+        }
+      ],
+      lastPracticedUnitId: 'unit1',
+      practicePositions: { 'unit1': 2, 'unit2': 0 }
+    };
+    
+    function testStorage() {
+      const result = document.getElementById('storage-test-result');
+      let output = '=== 测试存储功能 ===\n';
+      
+      try {
+        // 测试保存
+        output += '\n1. 测试保存数据:\n';
+        for (const [key, value] of Object.entries(STORAGE_KEYS)) {
+          const data = testData[key.toLowerCase()];
+          if (data) {
+            localStorage.setItem(value, JSON.stringify(data));
+            sessionStorage.setItem(value, JSON.stringify(data));
+            output += `✓ 保存 ${key} 成功\n`;
+          }
+        }
+        
+        // 测试加载
+        output += '\n2. 测试加载数据:\n';
+        for (const [key, value] of Object.entries(STORAGE_KEYS)) {
+          const localStorageData = localStorage.getItem(value);
+          const sessionStorageData = sessionStorage.getItem(value);
+          
+          if (localStorageData) {
+            output += `✓ 从 localStorage 加载 ${key} 成功\n`;
+          } else {
+            output += `✗ 从 localStorage 加载 ${key} 失败\n`;
+          }
+          
+          if (sessionStorageData) {
+            output += `✓ 从 sessionStorage 加载 ${key} 成功\n`;
+          } else {
+            output += `✗ 从 sessionStorage 加载 ${key} 失败\n`;
+          }
+        }
+        
+        result.textContent = output;
+        result.parentElement.className = 'test-section success';
+      } catch (error) {
+        result.textContent = `测试失败: ${error.message}`;
+        result.parentElement.className = 'test-section error';
+      }
+    }
+    
+    function viewStorage() {
+      const result = document.getElementById('storage-content');
+      let output = '=== 当前存储内容 ===\n';
+      
+      // 查看localStorage
+      output += '\n1. localStorage:\n';
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        const value = localStorage.getItem(key);
+        output += `Key: ${key}\nValue: ${value}\n\n`;
+      }
+      
+      // 查看sessionStorage
+      output += '\n2. sessionStorage:\n';
+      for (let i = 0; i < sessionStorage.length; i++) {
+        const key = sessionStorage.key(i);
+        const value = sessionStorage.getItem(key);
+        output += `Key: ${key}\nValue: ${value}\n\n`;
+      }
+      
+      result.textContent = output;
+    }
+    
+    function testPersistence() {
+      const result = document.getElementById('persistence-test-result');
+      let output = '=== 测试数据持久化 ===\n';
+      
+      try {
+        // 先保存数据
+        for (const [key, value] of Object.entries(STORAGE_KEYS)) {
+          const data = testData[key.toLowerCase()];
+          if (data) {
+            localStorage.setItem(value, JSON.stringify(data));
+            sessionStorage.setItem(value, JSON.stringify(data));
+          }
+        }
+        
+        output += '✓ 数据已保存\n';
+        output += '\n请刷新页面，然后再次点击"查看存储内容"按钮检查数据是否持久化\n';
+        output += '\n或者点击下面的"模拟刷新"按钮测试\n';
+        
+        result.textContent = output;
+        result.parentElement.className = 'test-section success';
+      } catch (error) {
+        result.textContent = `测试失败: ${error.message}`;
+        result.parentElement.className = 'test-section error';
+      }
+    }
+    
+    function clearStorage() {
+      const result = document.getElementById('clear-result');
+      
+      try {
+        localStorage.clear();
+        sessionStorage.clear();
+        result.textContent = '✓ 存储已清除';
+        result.parentElement.className = 'test-section success';
+      } catch (error) {
+        result.textContent = `清除失败: ${error.message}`;
+        result.parentElement.className = 'test-section error';
+      }
+    }
+    
+    // 页面加载时自动运行测试
+    window.onload = function() {
+      viewStorage();
+    };
+  </script>
+</body>
+</html>
