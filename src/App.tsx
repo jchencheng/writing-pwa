@@ -259,6 +259,13 @@ const App: React.FC = () => {
       return prev;
     });
   }, []);
+  
+  // 处理移除错题
+  const handleRemoveError = useCallback((errorId: string) => {
+    setErrorBook(prev => prev.filter((error: UserAnswer) => 
+      `${error.unitId}-${error.practiceId}-${error.blankIndex}` !== errorId
+    ));
+  }, []);
 
   // 导航到练习报告页
   const handlePracticeComplete = useCallback((report: PracticeReport) => {
@@ -351,7 +358,7 @@ const App: React.FC = () => {
             onProgressUpdate={handleProgressUpdate}
             onPositionUpdate={handlePositionUpdate}
             onAddError={handleAddError}
-            initialPosition={practicePositions[selectedUnit!.id] || 0}
+            onRemoveError={handleRemoveError}
           />
         );
       case 'report':

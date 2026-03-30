@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { PracticeUnit } from '../types';
 
 interface HomePageProps {
@@ -18,6 +18,10 @@ const HomePage: React.FC<HomePageProps> = ({
   onViewSettings, 
   lastPracticedUnitId 
 }) => {
+  // 状态管理
+  const [showUnitOptions, setShowUnitOptions] = useState(false);
+  const [selectedUnit, setSelectedUnit] = useState<PracticeUnit | null>(null);
+  
   // 获取最后练习的单元
   const lastPracticedUnit = lastPracticedUnitId ? units.find(unit => unit.id === lastPracticedUnitId) : null;
   
@@ -26,6 +30,39 @@ const HomePage: React.FC<HomePageProps> = ({
     if (units.length === 0) return 0;
     const totalProgress = units.reduce((sum, unit) => sum + (progress[unit.id] || 0), 0);
     return Math.round((totalProgress / units.length) * 100);
+  };
+  
+  // 处理单元点击
+  const handleUnitClick = (unit: PracticeUnit) => {
+    const unitProgress = progress[unit.id] || 0;
+    // 如果单元已完成（进度为100%），显示选项对话框
+    if (unitProgress >= 1) {
+      setSelectedUnit(unit);
+      setShowUnitOptions(true);
+    } else {
+      // 否则直接进入单元
+      onUnitSelect(unit);
+    }
+  };
+  
+  // 处理重做错题
+  const handleRetryErrors = () => {
+    if (selectedUnit) {
+      // 这里可以添加逻辑来标记用户想要重做错题
+      onUnitSelect(selectedUnit);
+      setShowUnitOptions(false);
+      setSelectedUnit(null);
+    }
+  };
+  
+  // 处理重新测试
+  const handleRetest = () => {
+    if (selectedUnit) {
+      // 这里可以添加逻辑来标记用户想要重新测试
+      onUnitSelect(selectedUnit);
+      setShowUnitOptions(false);
+      setSelectedUnit(null);
+    }
   };
 
   return (
@@ -113,7 +150,7 @@ const HomePage: React.FC<HomePageProps> = ({
               <div 
                 key={unit.id} 
                 className="card cursor-pointer hover:border-primary transition-colors"
-                onClick={() => onUnitSelect(unit)}
+                onClick={() => handleUnitClick(unit)}
               >
                 <h3 className="text-lg font-medium mb-2">{unit.title}</h3>
                 <p className="text-sm text-gray-600 mb-4">{unit.description}</p>
@@ -131,7 +168,7 @@ const HomePage: React.FC<HomePageProps> = ({
                   className="mt-4 btn-primary w-full"
                   onClick={(e) => {
                     e.stopPropagation();
-                    onUnitSelect(unit);
+                    handleUnitClick(unit);
                   }}
                 >
                   开始练习
@@ -148,6 +185,39 @@ const HomePage: React.FC<HomePageProps> = ({
           <p>© 2026 英语写作练习 | 通过填空练习强化英语短语与单词记忆</p>
         </div>
       </footer>
+
+      {/* 单元选项对话框 */}
+      {showUnitOptions && selectedUnit && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full">
+            <h3 className="text-lg font-semibold mb-4">{selectedUnit.title}</h3>
+            <p className="text-gray-600 mb-6">此单元已完成，您想如何继续？</p>
+            <div className="flex flex-col gap-3">
+              <button
+                className="btn-primary py-2 px-4 rounded-md"
+                onClick={handleRetryErrors}
+              >
+                重做此单元错题
+              </button>
+              <button
+                className="btn-secondary py-2 px-4 rounded-md"
+                onClick={handleRetest}
+              >
+                重新测试
+              </button>
+              <button
+                className="text-gray-500 py-2 px-4 rounded-md hover:bg-gray-100"
+                onClick={() => {
+                  setShowUnitOptions(false);
+                  setSelectedUnit(null);
+                }}
+              >
+                取消
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

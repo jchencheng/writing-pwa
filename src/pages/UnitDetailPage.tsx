@@ -8,7 +8,8 @@ interface UnitDetailPageProps {
   onProgressUpdate: (unitId: string, progress: number) => void;
   onPositionUpdate: (unitId: string, position: number) => void;
   onAddError: (error: UserAnswer) => void;
-  initialPosition?: number;
+  onRemoveError: (errorId: string) => void;
+  practiceMode?: 'retest' | 'retryErrors';
 }
 
 const UnitDetailPage: React.FC<UnitDetailPageProps> = ({ 
@@ -18,22 +19,37 @@ const UnitDetailPage: React.FC<UnitDetailPageProps> = ({
   onProgressUpdate, 
   onPositionUpdate, 
   onAddError, 
-  initialPosition = 0 
+  onRemoveError, 
+  practiceMode = 'retest' 
 }) => {
-  const [currentPracticeIndex, setCurrentPracticeIndex] = useState(initialPosition);
+  const [currentPracticeIndex, setCurrentPracticeIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState<string[]>([]);
   const [showFeedback, setShowFeedback] = useState(false);
   const [isCorrect, setIsCorrect] = useState<boolean[]>([]);
   const [startTime] = useState<number>(Date.now());
   const [allUserAnswers, setAllUserAnswers] = useState<{[practiceId: string]: {userAnswers: string[], isCorrect: boolean[]}}>({});
+  const [filteredPractices, setFilteredPractices] = useState(unit.practices);
+  
+  // 根据练习模式过滤题目
+  useEffect(() => {
+    if (practiceMode === 'retryErrors') {
+      // 这里可以添加逻辑来过滤出用户之前做错的题目
+      // 暂时先使用所有题目，后续可以根据错题本数据进行过滤
+      setFilteredPractices(unit.practices);
+    } else {
+      // 重新测试模式，显示所有题目
+      setFilteredPractices(unit.practices);
+    }
+    setCurrentPracticeIndex(0);
+  }, [practiceMode, unit.practices]);
 
   // 初始化用户答案数组
   useEffect(() => {
-    const initialAnswers = unit.practices[currentPracticeIndex].blanks.map(() => '');
+    const initialAnswers = filteredPractices[currentPracticeIndex].blanks.map(() => '');
     setUserAnswers(initialAnswers);
     setShowFeedback(false);
     setIsCorrect([]);
-  }, [currentPracticeIndex, unit.practices]);
+  }, [currentPracticeIndex, filteredPractices]);
 
   // 监听位置变化并更新
   useEffect(() => {
@@ -51,7 +67,7 @@ const UnitDetailPage: React.FC<UnitDetailPageProps> = ({
 
   // 提交答案
   const handleSubmit = () => {
-    const currentPractice = unit.practices[currentPracticeIndex];
+    const currentPractice = filteredPractices[currentPracticeIndex];
     const correctAnswers = currentPractice.blanks.map(blank => blank.correctAnswer.toLowerCase().trim());
     const userAnswersLower = userAnswers.map(answer => answer.toLowerCase().trim());
     
@@ -59,7 +75,7 @@ const UnitDetailPage: React.FC<UnitDetailPageProps> = ({
     setIsCorrect(correctness);
     setShowFeedback(true);
     
-    // 检查是否有错题，如果有就添加到错题本
+    // 检查是否有错题，如果有就添加到错题本；如果答对了，就从错题本中移除
     correctness.forEach((isCorrect, blankIndex) => {
       if (!isCorrect && onAddError) {
         const error: UserAnswer = {
@@ -73,6 +89,10 @@ const UnitDetailPage: React.FC<UnitDetailPageProps> = ({
           explanation: currentPractice.explanation
         };
         onAddError(error);
+      } else if (isCorrect && onRemoveError) {
+        // 如果用户答对了，从错题本中移除该题目
+        const errorId = `${unit.id}-${currentPractice.id}-${blankIndex}`;
+        onRemoveError(errorId);
       }
     });
     
@@ -101,7 +121,7 @@ const UnitDetailPage: React.FC<UnitDetailPageProps> = ({
 
   // 下一题
   const handleNext = () => {
-    if (currentPracticeIndex < unit.practices.length - 1) {
+    if (currentPracticeIndex < filteredPractices.length - 1) {
       const nextPosition = currentPracticeIndex + 1;
       setCurrentPracticeIndex(nextPosition);
     } else {
@@ -110,13 +130,13 @@ const UnitDetailPage: React.FC<UnitDetailPageProps> = ({
       const timeSpent = Math.round((endTime - startTime) / 1000);
       
       // 计算正确率
-      const totalQuestions = unit.practices.length;
+      const totalQuestions = filteredPractices.length;
       
       // 计算实际正确的题目数量
       let correctCount = 0;
       const incorrectAnswers: UserAnswer[] = [];
       
-      unit.practices.forEach((practice) => {
+      filteredPractices.forEach((practice) => {
         const practiceResult = allUserAnswers[practice.id];
         if (practiceResult) {
           const isPracticeCorrect = practiceResult.isCorrect.every(correct => correct);
@@ -189,7 +209,7 @@ const UnitDetailPage: React.FC<UnitDetailPageProps> = ({
     }
   };
 
-  const currentPractice = unit.practices[currentPracticeIndex];
+  const currentPractice = filteredPractices[currentPracticeIndex];
   const questionParts = currentPractice.question.split('[ ]');
 
   return (
@@ -216,13 +236,13 @@ const UnitDetailPage: React.FC<UnitDetailPageProps> = ({
         {/* 题目进度 */}
         <div className="mb-6">
           <div className="flex justify-between mb-2">
-            <span className="text-sm font-medium">题目 {currentPracticeIndex + 1} / {unit.practices.length}</span>
-            <span className="text-sm text-gray-600">{Math.round(((currentPracticeIndex + 1) / unit.practices.length) * 100)}% 完成</span>
+            <span className="text-sm font-medium">题目 {currentPracticeIndex + 1} / {filteredPractices.length}</span>
+            <span className="text-sm text-gray-600">{Math.round(((currentPracticeIndex + 1) / filteredPractices.length) * 100)}% 完成</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
             <div 
               className="bg-primary h-2 rounded-full transition-all duration-500"
-              style={{ width: `${((currentPracticeIndex + 1) / unit.practices.length) * 100}%` }}
+              style={{ width: `${((currentPracticeIndex + 1) / filteredPractices.length) * 100}%` }}
             ></div>
           </div>
         </div>
