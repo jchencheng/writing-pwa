@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import HomePage from './pages/HomePage';
 import UnitDetailPage from './pages/UnitDetailPage';
+import UnitStudyPage from './pages/UnitStudyPage';
 import PracticeReportPage from './pages/PracticeReportPage';
 import ErrorBookPage from './pages/ErrorBookPage';
 import SettingsPage from './pages/SettingsPage';
@@ -99,7 +100,7 @@ const storage = {
 // 主应用组件
 const App: React.FC = () => {
   // 状态管理
-  const [currentPage, setCurrentPage] = useState<'home' | 'unit' | 'report' | 'errorBook' | 'settings'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'study' | 'unit' | 'report' | 'errorBook' | 'settings'>('home');
   const [selectedUnit, setSelectedUnit] = useState<PracticeUnit | null>(null);
   const [practiceReport, setPracticeReport] = useState<PracticeReport | null>(null);
   const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
@@ -228,8 +229,8 @@ const App: React.FC = () => {
       // 单元已完成，跳转到练习报告
       setCurrentPage('report');
     } else {
-      // 单元未完成，从之前的位置继续练习
-      setCurrentPage('unit');
+      // 单元未完成，先跳转到学习页面
+      setCurrentPage('study');
     }
   }, [practiceReport, practiceProgress]);
 
@@ -344,6 +345,18 @@ const App: React.FC = () => {
     console.log('=== Data imported successfully ===');
   }, []);
 
+  // 从学习页面开始练习
+  const handleStartPractice = useCallback(() => {
+    setCurrentPage('unit');
+  }, []);
+
+  // 导航到学习页面
+  const handleStudyUnit = useCallback((unit: PracticeUnit) => {
+    setSelectedUnit(unit);
+    setLastPracticedUnitId(unit.id);
+    setCurrentPage('study');
+  }, []);
+
   // 渲染当前页面
   const renderCurrentPage = () => {
     switch (currentPage) {
@@ -356,6 +369,15 @@ const App: React.FC = () => {
             onViewErrorBook={handleViewErrorBook}
             onViewSettings={handleViewSettings}
             lastPracticedUnitId={lastPracticedUnitId}
+            onStudyUnit={handleStudyUnit}
+          />
+        );
+      case 'study':
+        return (
+          <UnitStudyPage
+            unit={selectedUnit!}
+            onStartPractice={handleStartPractice}
+            onBack={handleBackToHome}
           />
         );
       case 'unit':
@@ -421,6 +443,7 @@ const App: React.FC = () => {
             onViewErrorBook={handleViewErrorBook}
             onViewSettings={handleViewSettings}
             lastPracticedUnitId={lastPracticedUnitId}
+            onStudyUnit={handleStudyUnit}
           />
         );
     }

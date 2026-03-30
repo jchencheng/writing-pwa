@@ -8,6 +8,7 @@ interface HomePageProps {
   onViewErrorBook: () => void;
   onViewSettings: () => void;
   lastPracticedUnitId: string | null;
+  onStudyUnit: (unit: PracticeUnit) => void;
 }
 
 const HomePage: React.FC<HomePageProps> = ({ 
@@ -16,7 +17,8 @@ const HomePage: React.FC<HomePageProps> = ({
   onUnitSelect, 
   onViewErrorBook, 
   onViewSettings, 
-  lastPracticedUnitId 
+  lastPracticedUnitId,
+  onStudyUnit 
 }) => {
   // 状态管理
   const [showUnitOptions, setShowUnitOptions] = useState(false);
@@ -164,15 +166,26 @@ const HomePage: React.FC<HomePageProps> = ({
                     style={{ width: `${unitProgress}%` }}
                   ></div>
                 </div>
-                <button 
-                  className="mt-4 btn-primary w-full"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleUnitClick(unit);
-                  }}
-                >
-                  开始练习
-                </button>
+                <div className="flex gap-2 mt-4">
+                  <button 
+                    className="btn-primary w-full"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleUnitClick(unit);
+                    }}
+                  >
+                    开始练习
+                  </button>
+                  <button 
+                    className="btn-secondary w-full"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onStudyUnit(unit);
+                    }}
+                  >
+                    学习词组
+                  </button>
+                </div>
               </div>
             );
           })}

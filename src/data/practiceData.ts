@@ -9,6 +9,18 @@ export const practiceUnits: PracticeUnit[] = [
     level: 'intermediate',
     completedCount: 0,
     practiceCount: 13,
+    phrases: [
+      { english: 'key part', chinese: '关键部分' },
+      { english: 'inform about', chinese: '告知关于' },
+      { english: 'play a role', chinese: '发挥作用' },
+      { english: 'aim to', chinese: '旨在' },
+      { english: 'create awareness', chinese: '创造 awareness' },
+      { english: 'influence consumers', chinese: '影响消费者' },
+      { english: 'promote products', chinese: '推广产品' },
+      { english: 'increase sales', chinese: '增加销售' },
+      { english: 'build brand', chinese: '建立品牌' },
+      { english: 'target audience', chinese: '目标受众' }
+    ],
     practices: [
       {
         id: 'p1',
@@ -322,141 +334,215 @@ export const practiceUnits: PracticeUnit[] = [
   },
   {
     id: 'unit2',
-    title: 'Unit 2 动词搭配',
-    description: '学习常用动词与介词的搭配，提高写作准确性',
+    title: 'Unit 2 动物与环境 (Animals & Environment)',
+    description: '掌握动物与环境相关的英语表达，提升写作能力',
     level: 'intermediate',
     completedCount: 0,
     practiceCount: 10,
+    phrases: [
+      { english: 'advance medical and scientific knowledge', chinese: '推动医学和科学知识的发展' },
+      { english: 'medical discoveries involved experimentation on animals', chinese: '医学发现涉及动物实验' },
+      { english: 'minimise the suffering that animals experience', chinese: '减少动物所经历的痛苦' },
+      { english: 'banned in many countries', chinese: '在许多国家被禁止' },
+      { english: 'do not justify the suffering caused', chinese: '不足以证明所造成的痛苦是合理的' },
+      { english: 'alternative methods of research', chinese: '研究的替代方法' },
+      { english: 'no moral right', chinese: '没有道德权利' },
+      { english: 'possible without eating meat', chinese: '不吃肉也是可能的' },
+      { english: 'reduce the risk of diseases like cancer', chinese: '降低患癌症等疾病的风险' },
+      { english: 'treatment of animals in factory farms', chinese: '工厂化农场对待动物的方式' },
+      { english: 'balanced diet', chinese: '均衡的饮食' },
+      { english: 'main ingredient in traditional meals', chinese: '传统膳食中的主要成分' },
+      { english: 'below humans in the food chain', chinese: '在食物链中处于人类之下' },
+      { english: 'produce organic food', chinese: '生产有机食品' },
+      { english: 'play an important role in wildlife conservation', chinese: '在野生动物保护中发挥重要作用' },
+      { english: 'provide job opportunities', chinese: '提供就业机会' },
+      { english: 'artificial environments', chinese: '人造环境' },
+      { english: 'lose the freedom to hunt for food', chinese: '失去捕食的自由' },
+      { english: 'protecting natural habitats', chinese: '保护自然栖息地' },
+      { english: 'entertainment and profit', chinese: '娱乐和盈利' }
+    ],
     practices: [
       {
         id: 'p1',
-        question: 'I [ ] looking forward to meeting you again.',
+        question: 'Animals are utilized in pivotal scientific research. Consequently, animal testing significantly helps to [ ] [ ] [ ] [ ] [ ], as evidenced by the fact that many groundbreaking [ ] [ ] [ ] [ ] [ ] [ ].',
         blanks: [
-          {
-            id: 'b1',
-            correctAnswer: 'am',
-            options: ['am', 'is', 'are', 'was']
-          }
+          { id: 'b1', correctAnswer: 'advance', options: ['advance', 'promote', 'develop', 'enhance'] },
+          { id: 'b2', correctAnswer: 'medical', options: ['medical', 'health', 'scientific', 'biological'] },
+          { id: 'b3', correctAnswer: 'and', options: ['and', 'or', 'as', 'but'] },
+          { id: 'b4', correctAnswer: 'scientific', options: ['scientific', 'medical', 'technical', 'research'] },
+          { id: 'b5', correctAnswer: 'knowledge', options: ['knowledge', 'research', 'understanding', 'studies'] },
+          { id: 'b6', correctAnswer: 'medical', options: ['medical', 'scientific', 'health', 'biological'] },
+          { id: 'b7', correctAnswer: 'discoveries', options: ['discoveries', 'findings', 'research', 'studies'] },
+          { id: 'b8', correctAnswer: 'involved', options: ['involved', 'required', 'included', 'needed'] },
+          { id: 'b9', correctAnswer: 'experimentation', options: ['experimentation', 'testing', 'research', 'studies'] },
+          { id: 'b10', correctAnswer: 'on', options: ['on', 'with', 'using', 'involving'] },
+          { id: 'b11', correctAnswer: 'animals', options: ['animals', 'creatures', 'organisms', 'species'] }
         ],
-        explanation: 'look forward to是固定搭配，表示期待，主语是I，所以用am。',
-        feedback: '正确！look forward to是固定搭配，表示期待，后面接动名词。'
+        explanation: 'advance medical and scientific knowledge 表示推动医学和科学知识的发展，medical discoveries involved experimentation on animals 表示医学发现涉及动物实验，符合句子语境。',
+        feedback: '正确！advance medical and scientific knowledge 表示推动医学和科学知识的发展，medical discoveries involved experimentation on animals 表示医学发现涉及动物实验。',
+        translation: '动物被用于关键的科学研究。因此，动物实验显著有助于推动医学和科学知识的发展，这一点可以从许多突破性的医学发现涉及动物实验这一事实中得到证明。'
       },
       {
         id: 'p2',
-        question: 'She [ ] care of her younger brother every day.',
+        question: 'While ethical concerns exist, researchers aim to [ ] [ ] [ ] [ ] [ ] [ ] [ ]. Furthermore, it is worth noting that testing for the cosmetics industry is now [ ] [ ] [ ] [ ].',
         blanks: [
-          {
-            id: 'b1',
-            correctAnswer: 'takes',
-            options: ['take', 'takes', 'took', 'taking']
-          }
+          { id: 'b1', correctAnswer: 'minimise', options: ['minimise', 'reduce', 'decrease', 'lessen'] },
+          { id: 'b2', correctAnswer: 'the', options: ['the', 'a', 'any', 'some'] },
+          { id: 'b3', correctAnswer: 'suffering', options: ['suffering', 'pain', 'distress', 'discomfort'] },
+          { id: 'b4', correctAnswer: 'that', options: ['that', 'which', 'what', 'who'] },
+          { id: 'b5', correctAnswer: 'animals', options: ['animals', 'creatures', 'organisms', 'species'] },
+          { id: 'b6', correctAnswer: 'experience', options: ['experience', 'endure', 'suffer', 'undergo'] },
+          { id: 'b7', correctAnswer: 'banned', options: ['banned', 'prohibited', 'forbidden', 'outlawed'] },
+          { id: 'b8', correctAnswer: 'in', options: ['in', 'by', 'across', 'throughout'] },
+          { id: 'b9', correctAnswer: 'many', options: ['many', 'numerous', 'several', 'various'] },
+          { id: 'b10', correctAnswer: 'countries', options: ['countries', 'nations', 'states', 'regions'] }
         ],
-        explanation: 'take care of是固定搭配，表示照顾，主语是第三人称单数she，所以用takes。',
-        feedback: '正确！take care of是固定搭配，表示照顾，主语是第三人称单数时用takes。'
+        explanation: 'minimise the suffering that animals experience 表示减少动物所经历的痛苦，banned in many countries 表示在许多国家被禁止，符合句子语境。',
+        feedback: '正确！minimise the suffering that animals experience 表示减少动物所经历的痛苦，banned in many countries 表示在许多国家被禁止。',
+        translation: '虽然存在伦理担忧，但研究人员旨在减少动物所经历的痛苦。此外，值得注意的是，化妆品行业的测试现在在许多国家被禁止。'
       },
       {
         id: 'p3',
-        question: 'They [ ] part in the school play last year.',
+        question: 'Conversely, animal rights activists argue that the purported benefits of research using animals simply [ ] [ ] [ ] [ ] [ ] [ ] [ ]. They emphasize that there are [ ] [ ] [ ] [ ], asserting that humans have [ ] [ ] [ ] to do experiments on animals.',
         blanks: [
-          {
-            id: 'b1',
-            correctAnswer: 'took',
-            options: ['take', 'takes', 'took', 'taking']
-          }
+          { id: 'b1', correctAnswer: 'do', options: ['do', 'can', 'will', 'may'] },
+          { id: 'b2', correctAnswer: 'not', options: ['not', 'never', 'no', 'nor'] },
+          { id: 'b3', correctAnswer: 'justify', options: ['justify', 'validate', 'warrant', 'support'] },
+          { id: 'b4', correctAnswer: 'the', options: ['the', 'a', 'any', 'some'] },
+          { id: 'b5', correctAnswer: 'suffering', options: ['suffering', 'pain', 'distress', 'discomfort'] },
+          { id: 'b6', correctAnswer: 'caused', options: ['caused', 'resulted', 'created', 'produced'] },
+          { id: 'b7', correctAnswer: 'alternative', options: ['alternative', 'other', 'different', 'substitute'] },
+          { id: 'b8', correctAnswer: 'methods', options: ['methods', 'ways', 'approaches', 'techniques'] },
+          { id: 'b9', correctAnswer: 'of', options: ['of', 'for', 'in', 'with'] },
+          { id: 'b10', correctAnswer: 'research', options: ['research', 'study', 'investigation', 'exploration'] },
+          { id: 'b11', correctAnswer: 'no', options: ['no', 'not', 'neither', 'nor'] },
+          { id: 'b12', correctAnswer: 'moral', options: ['moral', 'ethical', 'right', 'just'] },
+          { id: 'b13', correctAnswer: 'right', options: ['right', 'entitlement', 'permission', 'authority'] }
         ],
-        explanation: 'take part in是固定搭配，表示参加，这里使用一般过去时，所以用took。',
-        feedback: '正确！take part in是固定搭配，表示参加，过去式是took。'
+        explanation: 'do not justify the suffering caused 表示不足以证明所造成的痛苦是合理的，alternative methods of research 表示研究的替代方法，no moral right 表示没有道德权利，符合句子语境。',
+        feedback: '正确！do not justify the suffering caused 表示不足以证明所造成的痛苦是合理的，alternative methods of research 表示研究的替代方法，no moral right 表示没有道德权利。',
+        translation: '相反，动物权利活动家认为，使用动物进行研究的所谓好处根本不足以证明所造成的痛苦是合理的。他们强调，有研究的替代方法，并断言人类没有道德权利对动物进行实验。'
       },
       {
         id: 'p4',
-        question: 'We [ ] advantage of the good weather to go hiking.',
+        question: 'Many vegetarians contend that a healthy diet is [ ] [ ] [ ] [ ], making it unnecessary to kill animals for food.',
         blanks: [
-          {
-            id: 'b1',
-            correctAnswer: 'took',
-            options: ['take', 'takes', 'took', 'taking']
-          }
+          { id: 'b1', correctAnswer: 'possible', options: ['possible', 'achievable', 'feasible', 'doable'] },
+          { id: 'b2', correctAnswer: 'without', options: ['without', 'no', 'not', 'lacking'] },
+          { id: 'b3', correctAnswer: 'eating', options: ['eating', 'consuming', 'having', 'taking'] },
+          { id: 'b4', correctAnswer: 'meat', options: ['meat', 'flesh', 'animal products', 'protein'] }
         ],
-        explanation: 'take advantage of是固定搭配，表示利用，这里使用一般过去时，所以用took。',
-        feedback: '正确！take advantage of是固定搭配，表示利用，过去式是took。'
+        explanation: 'possible without eating meat 表示不吃肉也是可能的，符合句子语境。',
+        feedback: '正确！possible without eating meat 表示不吃肉也是可能的。',
+        translation: '许多素食者认为，健康的饮食可以不吃肉，因此没有必要为了食物而杀死动物。'
       },
       {
         id: 'p5',
-        question: 'He [ ] attention to the teacher in class.',
+        question: 'Additionally, adopting a plant-based diet may [ ] [ ] [ ] [ ] [ ] [ ] [ ], while simultaneously allowing people to question the [ ] [ ] [ ] [ ] [ ] [ ].',
         blanks: [
-          {
-            id: 'b1',
-            correctAnswer: 'pays',
-            options: ['pay', 'pays', 'paid', 'paying']
-          }
+          { id: 'b1', correctAnswer: 'reduce', options: ['reduce', 'lower', 'decrease', 'minimise'] },
+          { id: 'b2', correctAnswer: 'the', options: ['the', 'a', 'any', 'some'] },
+          { id: 'b3', correctAnswer: 'risk', options: ['risk', 'chance', 'probability', 'likelihood'] },
+          { id: 'b4', correctAnswer: 'of', options: ['of', 'for', 'from', 'against'] },
+          { id: 'b5', correctAnswer: 'diseases', options: ['diseases', 'illnesses', 'ailments', 'conditions'] },
+          { id: 'b6', correctAnswer: 'like', options: ['like', 'such as', 'including', 'such'] },
+          { id: 'b7', correctAnswer: 'cancer', options: ['cancer', 'tumor', 'malignancy', 'carcinoma'] },
+          { id: 'b8', correctAnswer: 'treatment', options: ['treatment', 'handling', 'treatment', 'management'] },
+          { id: 'b9', correctAnswer: 'of', options: ['of', 'for', 'towards', 'regarding'] },
+          { id: 'b10', correctAnswer: 'animals', options: ['animals', 'creatures', 'organisms', 'species'] },
+          { id: 'b11', correctAnswer: 'in', options: ['in', 'at', 'within', 'inside'] },
+          { id: 'b12', correctAnswer: 'factory', options: ['factory', 'industrial', 'commercial', 'mass'] },
+          { id: 'b13', correctAnswer: 'farms', options: ['farms', 'facilities', 'operations', 'enterprises'] }
         ],
-        explanation: 'pay attention to是固定搭配，表示注意，主语是第三人称单数he，所以用pays。',
-        feedback: '正确！pay attention to是固定搭配，表示注意，主语是第三人称单数时用pays。'
+        explanation: 'reduce the risk of diseases like cancer 表示降低患癌症等疾病的风险，treatment of animals in factory farms 表示工厂化农场对待动物的方式，符合句子语境。',
+        feedback: '正确！reduce the risk of diseases like cancer 表示降低患癌症等疾病的风险，treatment of animals in factory farms 表示工厂化农场对待动物的方式。',
+        translation: '此外，采用植物性饮食可能会降低患癌症等疾病的风险，同时让人们质疑工厂化农场对待动物的方式。'
       },
       {
         id: 'p6',
-        question: 'I [ ] pride in my work.',
+        question: 'On the other hand, critics argue that vegetarians do not eat a [ ] [ ], and point out that in many cultures, meat is the [ ] [ ] [ ] [ ] [ ].',
         blanks: [
-          {
-            id: 'b1',
-            correctAnswer: 'take',
-            options: ['take', 'takes', 'took', 'taking']
-          }
+          { id: 'b1', correctAnswer: 'balanced', options: ['balanced', 'healthy', 'nutritious', 'well-rounded'] },
+          { id: 'b2', correctAnswer: 'diet', options: ['diet', 'meal', 'food', 'nutrition'] },
+          { id: 'b3', correctAnswer: 'main', options: ['main', 'primary', 'principal', 'chief'] },
+          { id: 'b4', correctAnswer: 'ingredient', options: ['ingredient', 'component', 'element', 'part'] },
+          { id: 'b5', correctAnswer: 'in', options: ['in', 'of', 'for', 'within'] },
+          { id: 'b6', correctAnswer: 'traditional', options: ['traditional', 'cultural', 'customary', 'conventional'] },
+          { id: 'b7', correctAnswer: 'meals', options: ['meals', 'dishes', 'foods', 'cuisines'] }
         ],
-        explanation: 'take pride in是固定搭配，表示为...感到骄傲，主语是I，所以用take。',
-        feedback: '正确！take pride in是固定搭配，表示为...感到骄傲，主语I后用动词原形。'
+        explanation: 'balanced diet 表示均衡的饮食，main ingredient in traditional meals 表示传统膳食中的主要成分，符合句子语境。',
+        feedback: '正确！balanced diet 表示均衡的饮食，main ingredient in traditional meals 表示传统膳食中的主要成分。',
+        translation: '另一方面，批评者认为素食者没有均衡的饮食，并指出在许多文化中，肉类是传统膳食中的主要成分。'
       },
       {
         id: 'p7',
-        question: 'She [ ] care of the garden every weekend.',
+        question: 'Meat-eaters argue that animals are [ ] [ ] [ ] [ ] [ ] [ ], making it completely natural for us to kill them for food. Therefore, our aim should be to improve farming methods so that farms can [ ] [ ] [ ].',
         blanks: [
-          {
-            id: 'b1',
-            correctAnswer: 'takes',
-            options: ['take', 'takes', 'took', 'taking']
-          }
+          { id: 'b1', correctAnswer: 'below', options: ['below', 'under', 'beneath', 'lower than'] },
+          { id: 'b2', correctAnswer: 'humans', options: ['humans', 'people', 'human beings', 'mankind'] },
+          { id: 'b3', correctAnswer: 'in', options: ['in', 'on', 'within', 'along'] },
+          { id: 'b4', correctAnswer: 'the', options: ['the', 'a', 'any', 'some'] },
+          { id: 'b5', correctAnswer: 'food', options: ['food', 'eating', 'consumption', 'nourishment'] },
+          { id: 'b6', correctAnswer: 'chain', options: ['chain', 'web', 'system', 'hierarchy'] },
+          { id: 'b7', correctAnswer: 'produce', options: ['produce', 'create', 'generate', 'make'] },
+          { id: 'b8', correctAnswer: 'organic', options: ['organic', 'natural', 'pure', 'unprocessed'] },
+          { id: 'b9', correctAnswer: 'food', options: ['food', 'products', 'goods', 'items'] }
         ],
-        explanation: 'take care of是固定搭配，表示照顾，主语是第三人称单数she，所以用takes。',
-        feedback: '正确！take care of是固定搭配，表示照顾，主语是第三人称单数时用takes。'
+        explanation: 'below humans in the food chain 表示在食物链中处于人类之下，produce organic food 表示生产有机食品，符合句子语境。',
+        feedback: '正确！below humans in the food chain 表示在食物链中处于人类之下，produce organic food 表示生产有机食品。',
+        translation: '肉食者认为，动物在食物链中处于人类之下，因此我们为了食物而杀死它们是完全自然的。因此，我们的目标应该是改进 farming methods，使农场能够生产有机食品。'
       },
       {
         id: 'p8',
-        question: 'They [ ] part in the competition next month.',
+        question: 'Proponents assert that zoos [ ] [ ] [ ] [ ] [ ] [ ] [ ], and they [ ] [ ] [ ] for local communities.',
         blanks: [
-          {
-            id: 'b1',
-            correctAnswer: 'will take',
-            options: ['take', 'takes', 'took', 'will take']
-          }
+          { id: 'b1', correctAnswer: 'play', options: ['play', 'have', 'take', 'perform'] },
+          { id: 'b2', correctAnswer: 'an', options: ['an', 'a', 'the', 'some'] },
+          { id: 'b3', correctAnswer: 'important', options: ['important', 'significant', 'crucial', 'vital'] },
+          { id: 'b4', correctAnswer: 'role', options: ['role', 'part', 'function', 'position'] },
+          { id: 'b5', correctAnswer: 'in', options: ['in', 'for', 'with', 'on'] },
+          { id: 'b6', correctAnswer: 'wildlife', options: ['wildlife', 'animal', 'species', 'fauna'] },
+          { id: 'b7', correctAnswer: 'conservation', options: ['conservation', 'protection', 'preservation', 'safeguarding'] },
+          { id: 'b8', correctAnswer: 'provide', options: ['provide', 'offer', 'supply', 'give'] },
+          { id: 'b9', correctAnswer: 'job', options: ['job', 'employment', 'work', 'career'] },
+          { id: 'b10', correctAnswer: 'opportunities', options: ['opportunities', 'chances', 'possibilities', 'prospects'] }
         ],
-        explanation: 'take part in是固定搭配，表示参加，这里使用一般将来时，所以用will take。',
-        feedback: '正确！take part in是固定搭配，表示参加，一般将来时用will take。'
+        explanation: 'play an important role in wildlife conservation 表示在野生动物保护中发挥重要作用，provide job opportunities 表示提供就业机会，符合句子语境。',
+        feedback: '正确！play an important role in wildlife conservation 表示在野生动物保护中发挥重要作用，provide job opportunities 表示提供就业机会。',
+        translation: '支持者断言，动物园在野生动物保护中发挥重要作用，并且为当地社区提供就业机会。'
       },
       {
         id: 'p9',
-        question: 'We [ ] care of our health by eating well and exercising regularly.',
+        question: 'Nevertheless, opponents point out that zoo animals are kept in [ ] [ ]. As a result, they [ ] [ ] [ ] [ ] [ ] [ ] [ ].',
         blanks: [
-          {
-            id: 'b1',
-            correctAnswer: 'take',
-            options: ['take', 'takes', 'took', 'taking']
-          }
+          { id: 'b1', correctAnswer: 'artificial', options: ['artificial', 'man-made', 'synthetic', 'unnatural'] },
+          { id: 'b2', correctAnswer: 'environments', options: ['environments', 'habitats', 'settings', 'surroundings'] },
+          { id: 'b3', correctAnswer: 'lose', options: ['lose', 'lose', 'forfeit', 'surrender'] },
+          { id: 'b4', correctAnswer: 'the', options: ['the', 'a', 'any', 'some'] },
+          { id: 'b5', correctAnswer: 'freedom', options: ['freedom', 'liberty', 'independence', 'autonomy'] },
+          { id: 'b6', correctAnswer: 'to', options: ['to', 'for', 'of', 'in'] },
+          { id: 'b7', correctAnswer: 'hunt', options: ['hunt', 'search', 'look', 'seek'] },
+          { id: 'b8', correctAnswer: 'for', options: ['for', 'after', 'about', 'in'] },
+          { id: 'b9', correctAnswer: 'food', options: ['food', 'prey', 'nourishment', 'sustenance'] }
         ],
-        explanation: 'take care of是固定搭配，表示照顾，主语是we，所以用take。',
-        feedback: '正确！take care of是固定搭配，表示照顾，主语we后用动词原形。'
+        explanation: 'artificial environments 表示人造环境，lose the freedom to hunt for food 表示失去捕食的自由，符合句子语境。',
+        feedback: '正确！artificial environments 表示人造环境，lose the freedom to hunt for food 表示失去捕食的自由。',
+        translation: '然而，反对者指出，动物园动物被关在人造环境中。结果，它们失去了捕食的自由。'
       },
       {
         id: 'p10',
-        question: 'He [ ] attention to detail in his work.',
+        question: 'Critics firmly believe that the best way to save endangered species is by [ ] [ ] [ ], arguing that we have no right to use animals for [ ] [ ] [ ].',
         blanks: [
-          {
-            id: 'b1',
-            correctAnswer: 'pays',
-            options: ['pay', 'pays', 'paid', 'paying']
-          }
+          { id: 'b1', correctAnswer: 'protecting', options: ['protecting', 'preserving', 'safeguarding', 'defending'] },
+          { id: 'b2', correctAnswer: 'natural', options: ['natural', 'wild', 'untamed', 'pristine'] },
+          { id: 'b3', correctAnswer: 'habitats', options: ['habitats', 'environments', 'homes', 'ecosystems'] },
+          { id: 'b4', correctAnswer: 'entertainment', options: ['entertainment', 'amusement', 'recreation', 'pleasure'] },
+          { id: 'b5', correctAnswer: 'and', options: ['and', 'or', 'as', 'but'] },
+          { id: 'b6', correctAnswer: 'profit', options: ['profit', 'gain', 'benefit', 'advantage'] }
         ],
-        explanation: 'pay attention to是固定搭配，表示注意，主语是第三人称单数he，所以用pays。',
-        feedback: '正确！pay attention to是固定搭配，表示注意，主语是第三人称单数时用pays。'
+        explanation: 'protecting natural habitats 表示保护自然栖息地，entertainment and profit 表示娱乐和盈利，符合句子语境。',
+        feedback: '正确！protecting natural habitats 表示保护自然栖息地，entertainment and profit 表示娱乐和盈利。',
+        translation: '批评者坚信，拯救濒危物种的最佳方法是保护自然栖息地，他们认为我们没有权利将动物用于娱乐和盈利。'
       }
     ]
   },

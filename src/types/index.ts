@@ -1,3 +1,9 @@
+// 词组类型
+export interface Phrase {
+  english: string;
+  chinese: string;
+}
+
 // 练习单元类型
 export interface PracticeUnit {
   id: string;
@@ -7,6 +13,7 @@ export interface PracticeUnit {
   level: 'beginner' | 'intermediate' | 'advanced';
   completedCount: number;
   practiceCount: number;
+  phrases?: Phrase[]; // 学习页面的词组和释义
 }
 
 // 练习题目类型
