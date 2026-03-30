@@ -599,5 +599,77 @@ export const practiceUnits: PracticeUnit[] = [
         feedback: '正确！look forward to是固定搭配，表示期待，后面接名词或动名词。'
       }
     ]
+  },
+  {
+    id: 'unit4',
+    title: 'Unit 4 测试单元',
+    description: '包含Unit 1中的3个测试题，用于手动测试网站功能',
+    level: 'intermediate',
+    completedCount: 0,
+    practiceCount: 3,
+    practices: [
+      {
+        id: 'p1',
+        question: 'In the realm of contemporary commerce, advertising is a [ ] [ ] of business.',
+        blanks: [
+          {
+            id: 'b1',
+            correctAnswer: 'key',
+            options: ['key', 'important', 'major', 'vital']
+          },
+          {
+            id: 'b2',
+            correctAnswer: 'part',
+            options: ['part', 'component', 'element', 'aspect']
+          }
+        ],
+        explanation: 'key part 表示关键部分，符合句子语境。',
+        feedback: '正确！key part 表示关键部分，在当代商业领域，广告是业务的关键部分。',
+        translation: '在当代商业领域，广告是业务的关键部分。'
+      },
+      {
+        id: 'p2',
+        question: 'Advertisements [ ] customers [ ] the products and services that are available.',
+        blanks: [
+          {
+            id: 'b1',
+            correctAnswer: 'inform',
+            options: ['inform', 'tell', 'notify', 'educate']
+          },
+          {
+            id: 'b2',
+            correctAnswer: 'about',
+            options: ['about', 'of', 'on', 'regarding']
+          }
+        ],
+        explanation: 'inform... about 表示告知某人关于某事，符合句子语境。',
+        feedback: '正确！inform... about 表示告知，广告让消费者了解现有的产品和服务。',
+        translation: '广告让消费者了解现有的产品和服务。'
+      },
+      {
+        id: 'p3',
+        question: 'Advertising helps to [ ] [ ] and [ ] the economy.',
+        blanks: [
+          {
+            id: 'b1',
+            correctAnswer: 'increase',
+            options: ['increase', 'boost', 'raise', 'enhance']
+          },
+          {
+            id: 'b2',
+            correctAnswer: 'sales',
+            options: ['sales', 'revenue', 'profits', 'income']
+          },
+          {
+            id: 'b3',
+            correctAnswer: 'stimulate',
+            options: ['stimulate', 'boost', 'drive', 'promote']
+          }
+        ],
+        explanation: 'increase sales 表示增加销量，stimulate the economy 表示刺激经济，符合句子语境。',
+        feedback: '正确！increase sales 表示增加销量，stimulate the economy 表示刺激经济，广告有助于增加销量并刺激经济。',
+        translation: '广告有助于增加销量并刺激经济。'
+      }
+    ]
   }
 ];
