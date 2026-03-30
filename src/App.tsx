@@ -47,7 +47,7 @@ const storage = {
   },
   
   // 获取数据
-  get: <T>(key: string): T | null => {
+  get: (key: string) => {
     try {
       console.log(`Attempting to load ${key} from storage`);
       
@@ -58,7 +58,7 @@ const storage = {
         console.log('localStorage value:', localStorageValue);
         if (localStorageValue) {
           try {
-            const parsedValue = JSON.parse(localStorageValue) as T;
+            const parsedValue = JSON.parse(localStorageValue);
             console.log(`Loaded from localStorage: ${key}`, parsedValue);
             return parsedValue;
           } catch (parseError) {
@@ -76,7 +76,7 @@ const storage = {
         console.log('sessionStorage value:', sessionStorageValue);
         if (sessionStorageValue) {
           try {
-            const parsedValue = JSON.parse(sessionStorageValue) as T;
+            const parsedValue = JSON.parse(sessionStorageValue);
             console.log(`Loaded from sessionStorage: ${key}`, parsedValue);
             return parsedValue;
           } catch (parseError) {
@@ -126,11 +126,11 @@ const App: React.FC = () => {
       }
       
       // 加载所有数据
-      const savedProgress = storage.get<{ [unitId: string]: number }>(STORAGE_KEYS.PROGRESS);
-      const savedErrorBook = storage.get<UserAnswer[]>(STORAGE_KEYS.ERROR_BOOK);
-      const savedUserAnswers = storage.get<UserAnswer[]>(STORAGE_KEYS.USER_ANSWERS);
-      const savedLastPracticedUnitId = storage.get<string>(STORAGE_KEYS.LAST_PRACTICED_UNIT);
-      const savedPositions = storage.get<{ [unitId: string]: number }>(STORAGE_KEYS.PRACTICE_POSITIONS);
+      const savedProgress = storage.get(STORAGE_KEYS.PROGRESS);
+      const savedErrorBook = storage.get(STORAGE_KEYS.ERROR_BOOK);
+      const savedUserAnswers = storage.get(STORAGE_KEYS.USER_ANSWERS);
+      const savedLastPracticedUnitId = storage.get(STORAGE_KEYS.LAST_PRACTICED_UNIT);
+      const savedPositions = storage.get(STORAGE_KEYS.PRACTICE_POSITIONS);
       
       console.log('\n=== Loaded data ===');
       console.log('Loaded progress:', savedProgress);
@@ -352,7 +352,6 @@ const App: React.FC = () => {
             onPositionUpdate={handlePositionUpdate}
             onAddError={handleAddError}
             initialPosition={practicePositions[selectedUnit!.id] || 0}
-            currentProgress={practiceProgress[selectedUnit!.id] || 0}
           />
         );
       case 'report':

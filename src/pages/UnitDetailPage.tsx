@@ -9,7 +9,6 @@ interface UnitDetailPageProps {
   onPositionUpdate: (unitId: string, position: number) => void;
   onAddError: (error: UserAnswer) => void;
   initialPosition?: number;
-  currentProgress?: number;
 }
 
 const UnitDetailPage: React.FC<UnitDetailPageProps> = ({ 
@@ -19,8 +18,7 @@ const UnitDetailPage: React.FC<UnitDetailPageProps> = ({
   onProgressUpdate, 
   onPositionUpdate, 
   onAddError, 
-  initialPosition = 0, 
-  currentProgress = 0 
+  initialPosition = 0 
 }) => {
   const [currentPracticeIndex, setCurrentPracticeIndex] = useState(initialPosition);
   const [userAnswers, setUserAnswers] = useState<string[]>([]);

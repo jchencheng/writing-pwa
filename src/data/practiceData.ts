@@ -151,7 +151,7 @@ export const practiceUnits: PracticeUnit[] = [
       },
       {
         id: 'p7',
-        question: 'Many adverts [ ] [ ] [ ] by showing images of a "perfect" lifestyle that is often unattainable.',
+        question: 'Many adverts [ ] [ ]  by showing images of a "perfect" lifestyle that is often unattainable.',
         blanks: [
           {
             id: 'b1',
@@ -163,11 +163,7 @@ export const practiceUnits: PracticeUnit[] = [
             correctAnswer: 'dreams',
             options: ['dreams', 'ideals', 'aspirations', 'hopes']
           },
-          {
-            id: 'b3',
-            correctAnswer: '',
-            options: ['', '', '', '']
-          }
+          
         ],
         explanation: 'sell dreams 表示兜售梦想，符合句子语境。',
         feedback: '正确！sell dreams 表示兜售梦想，许多广告通过展示难以企及的“完美”生活方式来兜售梦想。',
