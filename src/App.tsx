@@ -107,6 +107,7 @@ const App: React.FC = () => {
   const [practiceProgress, setPracticeProgress] = useState<{ [unitId: string]: number }>({});
   const [lastPracticedUnitId, setLastPracticedUnitId] = useState<string | null>(null);
   const [practicePositions, setPracticePositions] = useState<{ [unitId: string]: number }>({});
+  const [practiceMode, setPracticeMode] = useState<'retest' | 'retryErrors'>('retest');
 
   // 从存储加载数据
   useEffect(() => {
@@ -221,8 +222,16 @@ const App: React.FC = () => {
   const handleUnitSelect = useCallback((unit: PracticeUnit) => {
     setSelectedUnit(unit);
     setLastPracticedUnitId(unit.id);
-    setCurrentPage('unit');
-  }, []);
+    // 检查单元是否已完成（进度为100%）
+    const unitProgress = practiceProgress[unit.id] || 0;
+    if (unitProgress >= 1 && practiceReport && practiceReport.unitId === unit.id) {
+      // 单元已完成，跳转到练习报告
+      setCurrentPage('report');
+    } else {
+      // 单元未完成，从之前的位置继续练习
+      setCurrentPage('unit');
+    }
+  }, [practiceReport, practiceProgress]);
 
   // 处理进度更新
   const handleProgressUpdate = useCallback((unitId: string, progress: number) => {
@@ -303,7 +312,7 @@ const App: React.FC = () => {
   const handleBackToHome = useCallback(() => {
     setCurrentPage('home');
     setSelectedUnit(null);
-    setPracticeReport(null);
+    // 不清除 practiceReport，以便重新进入单元时跳转到练习报告
   }, []);
 
   // 导航到设置页面
@@ -359,6 +368,9 @@ const App: React.FC = () => {
             onPositionUpdate={handlePositionUpdate}
             onAddError={handleAddError}
             onRemoveError={handleRemoveError}
+            practiceMode={practiceMode}
+            errorBook={errorBook}
+            initialPosition={practicePositions[selectedUnit!.id] || 0}
           />
         );
       case 'report':
@@ -367,7 +379,14 @@ const App: React.FC = () => {
             report={practiceReport!}
             unit={selectedUnit!}
             onBack={handleBackToHome}
-            onRetry={() => setCurrentPage('unit')}
+            onRetry={() => {
+              setPracticeMode('retest');
+              setCurrentPage('unit');
+            }}
+            onRetryErrors={() => {
+              setPracticeMode('retryErrors');
+              setCurrentPage('unit');
+            }}
           />
         );
       case 'errorBook':

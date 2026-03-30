@@ -6,9 +6,10 @@ interface PracticeReportPageProps {
   unit: PracticeUnit;
   onBack: () => void;
   onRetry: () => void;
+  onRetryErrors: () => void;
 }
 
-const PracticeReportPage: React.FC<PracticeReportPageProps> = ({ report, unit, onBack, onRetry }) => {
+const PracticeReportPage: React.FC<PracticeReportPageProps> = ({ report, unit, onBack, onRetry, onRetryErrors }) => {
   // 格式化用时
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -102,19 +103,29 @@ const PracticeReportPage: React.FC<PracticeReportPageProps> = ({ report, unit, o
           )}
 
           {/* 操作按钮 */}
-          <div className="flex justify-between">
+          <div className="flex flex-col sm:flex-row justify-between gap-4">
             <button
               onClick={onBack}
               className="btn-secondary"
             >
               返回单元列表
             </button>
-            <button
-              onClick={onRetry}
-              className="btn-primary"
-            >
-              重新练习
-            </button>
+            <div className="flex gap-4">
+              {report.incorrectAnswers.length > 0 && (
+                <button
+                  onClick={onRetryErrors}
+                  className="btn-secondary"
+                >
+                  重做此单元错题
+                </button>
+              )}
+              <button
+                onClick={onRetry}
+                className="btn-primary"
+              >
+                重新测试
+              </button>
+            </div>
           </div>
         </div>
       </main>

@@ -10,6 +10,8 @@ interface UnitDetailPageProps {
   onAddError: (error: UserAnswer) => void;
   onRemoveError: (errorId: string) => void;
   practiceMode?: 'retest' | 'retryErrors';
+  errorBook?: UserAnswer[];
+  initialPosition?: number;
 }
 
 const UnitDetailPage: React.FC<UnitDetailPageProps> = ({ 
@@ -20,9 +22,11 @@ const UnitDetailPage: React.FC<UnitDetailPageProps> = ({
   onPositionUpdate, 
   onAddError, 
   onRemoveError, 
-  practiceMode = 'retest' 
+  practiceMode = 'retest',
+  errorBook = [],
+  initialPosition = 0 
 }) => {
-  const [currentPracticeIndex, setCurrentPracticeIndex] = useState(0);
+  const [currentPracticeIndex, setCurrentPracticeIndex] = useState(initialPosition);
   const [userAnswers, setUserAnswers] = useState<string[]>([]);
   const [showFeedback, setShowFeedback] = useState(false);
   const [isCorrect, setIsCorrect] = useState<boolean[]>([]);
@@ -33,15 +37,28 @@ const UnitDetailPage: React.FC<UnitDetailPageProps> = ({
   // 根据练习模式过滤题目
   useEffect(() => {
     if (practiceMode === 'retryErrors') {
-      // 这里可以添加逻辑来过滤出用户之前做错的题目
-      // 暂时先使用所有题目，后续可以根据错题本数据进行过滤
-      setFilteredPractices(unit.practices);
+      // 从错题本中获取当前单元的错题
+      const errorPracticeIds = new Set<string>();
+      
+      // 收集当前单元的所有错题对应的练习ID
+      errorBook.forEach(error => {
+        if (error.unitId === unit.id) {
+          errorPracticeIds.add(error.practiceId);
+        }
+      });
+      
+      // 过滤出有错误记录的题目
+      const errorPractices = unit.practices.filter(practice => {
+        return errorPracticeIds.has(practice.id);
+      });
+      
+      setFilteredPractices(errorPractices.length > 0 ? errorPractices : unit.practices);
     } else {
       // 重新测试模式，显示所有题目
       setFilteredPractices(unit.practices);
     }
-    setCurrentPracticeIndex(0);
-  }, [practiceMode, unit.practices]);
+    // 不要强制重置为0，保持使用initialPosition或当前位置
+  }, [practiceMode, unit.practices, errorBook, unit.id]);
 
   // 初始化用户答案数组
   useEffect(() => {
