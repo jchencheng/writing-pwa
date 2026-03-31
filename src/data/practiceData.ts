@@ -548,148 +548,160 @@ export const practiceUnits: PracticeUnit[] = [
   },
   {
     id: 'unit3',
-    title: 'Unit 3 介词短语',
-    description: '掌握常用介词短语，丰富写作表达',
+    title: 'Unit 3 城市化 (Urbanisation)',
+    description: '掌握城市化相关的英语表达，提升写作能力',
     level: 'intermediate',
     completedCount: 0,
-    practiceCount: 10,
+    practiceCount: 6,
+    phrases: [
+      { english: 'migrate from the countryside', chinese: '从农村迁移' },
+      { english: 'in search of job opportunities', chinese: '寻找工作机会' },
+      { english: 'greater employment possibilities', chinese: '更多的就业可能性' },
+      { english: 'higher standard of living', chinese: '更高的生活标准' },
+      { english: 'traditional activities like farming', chinese: '像务农这样的传统活动' },
+      { english: 'cost of living', chinese: '生活成本' },
+      { english: 'rural areas', chinese: '农村地区' },
+      { english: 'manage to find work', chinese: '设法找到工作' },
+      { english: 'gap between the rich and poor', chinese: '贫富差距' },
+      { english: 'extremely stressful', chinese: '压力极其巨大' },
+      { english: 'traffic congestion and crime', chinese: '交通拥堵和犯罪' },
+      { english: 'lack a sense of community', chinese: '缺乏社区归属感' },
+      { english: 'concrete jungles', chinese: '混凝土丛林（指钢筋水泥森林般的城市）' },
+      { english: 'pedestrian zones', chinese: '步行区' },
+      { english: 'improve the local environment', chinese: '改善当地环境' },
+      { english: 'banning cars', chinese: '禁止车辆' },
+      { english: 'dependence on cars', chinese: '对汽车的依赖' },
+      { english: 'health problems like obesity', chinese: '像肥胖症之类的健康问题' },
+      { english: 'safer and more attractive', chinese: '更安全且更具吸引力' }
+    ],
     practices: [
       {
         id: 'p1',
-        question: 'The book is [ ] the table.',
+        question: 'Many people choose to [ ] [ ] [ ] [ ] to cities [ ] [ ] [ ] [ ] [ ]. This is because cities offer [ ] [ ] [ ] and a [ ] [ ] [ ] [ ] than smaller towns.',
         blanks: [
-          {
-            id: 'b1',
-            correctAnswer: 'on',
-            options: ['on', 'in', 'at', 'under']
-          }
+          { id: 'b1', correctAnswer: 'migrate', options: ['migrate', 'move', 'relocate', 'transfer'] },
+          { id: 'b2', correctAnswer: 'from', options: ['from', 'out of', 'away from', 'off'] },
+          { id: 'b3', correctAnswer: 'the', options: ['the', 'their', 'some', 'many'] },
+          { id: 'b4', correctAnswer: 'countryside', options: ['countryside', 'rural areas', 'villages', 'country'] },
+          { id: 'b5', correctAnswer: 'in', options: ['in', 'to', 'for', 'with'] },
+          { id: 'b6', correctAnswer: 'search', options: ['search', 'pursuit', 'quest', 'look'] },
+          { id: 'b7', correctAnswer: 'of', options: ['of', 'for', 'after', 'about'] },
+          { id: 'b8', correctAnswer: 'job', options: ['job', 'work', 'employment', 'career'] },
+          { id: 'b9', correctAnswer: 'opportunities', options: ['opportunities', 'chances', 'possibilities', 'prospects'] },
+          { id: 'b10', correctAnswer: 'greater', options: ['greater', 'more', 'better', 'larger'] },
+          { id: 'b11', correctAnswer: 'employment', options: ['employment', 'job', 'work', 'career'] },
+          { id: 'b12', correctAnswer: 'possibilities', options: ['possibilities', 'opportunities', 'chances', 'prospects'] },
+          { id: 'b13', correctAnswer: 'higher', options: ['higher', 'better', 'superior', 'improved'] },
+          { id: 'b14', correctAnswer: 'standard', options: ['standard', 'level', 'quality', 'grade'] },
+          { id: 'b15', correctAnswer: 'of', options: ['of', 'for', 'in', 'with'] },
+          { id: 'b16', correctAnswer: 'living', options: ['living', 'life', 'existence', 'survival'] }
         ],
-        explanation: 'on表示在...上面，所以用on。',
-        feedback: '正确！on表示在...上面，用于表示物体表面的位置。'
+        explanation: 'migrate from the countryside 表示从农村迁移，in search of job opportunities 表示寻找工作机会，greater employment possibilities 表示更多的就业可能性，higher standard of living 表示更高的生活标准，符合句子语境。',
+        feedback: '正确！migrate from the countryside 表示从农村迁移，in search of job opportunities 表示寻找工作机会，greater employment possibilities 表示更多的就业可能性，higher standard of living 表示更高的生活标准。',
+        translation: '许多人选择从农村迁移到城市以寻找工作机会。这是因为城市比小城镇提供更多的就业可能性和更高的生活标准。'
       },
       {
         id: 'p2',
-        question: 'She lives [ ] New York City.',
+        question: 'Urbanisation is also driven by the fact that [ ] [ ] [ ] [ ] need fewer workers nowadays due to technological advances.',
         blanks: [
-          {
-            id: 'b1',
-            correctAnswer: 'in',
-            options: ['on', 'in', 'at', 'under']
-          }
+          { id: 'b1', correctAnswer: 'traditional', options: ['traditional', 'conventional', 'customary', 'old'] },
+          { id: 'b2', correctAnswer: 'activities', options: ['activities', 'jobs', 'tasks', 'works'] },
+          { id: 'b3', correctAnswer: 'like', options: ['like', 'such as', 'including', 'for example'] },
+          { id: 'b4', correctAnswer: 'farming', options: ['farming', 'agriculture', 'farming', 'cultivation'] }
         ],
-        explanation: 'in表示在...里面（大地点），所以用in。',
-        feedback: '正确！in表示在...里面，用于表示大地点的位置。'
+        explanation: 'traditional activities like farming 表示像务农这样的传统活动，符合句子语境。',
+        feedback: '正确！traditional activities like farming 表示像务农这样的传统活动。',
+        translation: '城市化还受到由于技术进步，如今像务农这样的传统活动需要更少工人的事实所推动。'
       },
       {
         id: 'p3',
-        question: 'We met [ ] the park entrance.',
+        question: 'Despite the benefits, life in cities has its drawbacks; for instance, the [ ] [ ] [ ] is usually much higher than in [ ] [ ]. Furthermore, some people do not [ ] [ ] [ ] [ ], which leads to homelessness and a widening [ ] [ ] [ ] [ ] [ ] [ ].',
         blanks: [
-          {
-            id: 'b1',
-            correctAnswer: 'at',
-            options: ['on', 'in', 'at', 'under']
-          }
+          { id: 'b1', correctAnswer: 'cost', options: ['cost', 'expense', 'price', 'charge'] },
+          { id: 'b2', correctAnswer: 'of', options: ['of', 'for', 'in', 'with'] },
+          { id: 'b3', correctAnswer: 'living', options: ['living', 'life', 'existence', 'survival'] },
+          { id: 'b4', correctAnswer: 'rural', options: ['rural', 'country', 'village', 'countryside'] },
+          { id: 'b5', correctAnswer: 'areas', options: ['areas', 'regions', 'places', 'locations'] },
+          { id: 'b6', correctAnswer: 'manage', options: ['manage', 'succeed', 'try', 'attempt'] },
+          { id: 'b7', correctAnswer: 'to', options: ['to', 'and', 'for', 'in'] },
+          { id: 'b8', correctAnswer: 'find', options: ['find', 'get', 'secure', 'obtain'] },
+          { id: 'b9', correctAnswer: 'work', options: ['work', 'job', 'employment', 'occupation'] },
+          { id: 'b10', correctAnswer: 'gap', options: ['gap', 'difference', 'divide', 'disparity'] },
+          { id: 'b11', correctAnswer: 'between', options: ['between', 'among', 'with', 'amongst'] },
+          { id: 'b12', correctAnswer: 'the', options: ['the', 'a', 'some', 'many'] },
+          { id: 'b13', correctAnswer: 'rich', options: ['rich', 'wealthy', 'affluent', 'well-off'] },
+          { id: 'b14', correctAnswer: 'and', options: ['and', 'or', 'as', 'but'] },
+          { id: 'b15', correctAnswer: 'poor', options: ['poor', 'needy', 'impoverished', 'destitute'] }
         ],
-        explanation: 'at表示在...（小地点），所以用at。',
-        feedback: '正确！at表示在...，用于表示小地点的位置。'
+        explanation: 'cost of living 表示生活成本，rural areas 表示农村地区，manage to find work 表示设法找到工作，gap between the rich and poor 表示贫富差距，符合句子语境。',
+        feedback: '正确！cost of living 表示生活成本，rural areas 表示农村地区，manage to find work 表示设法找到工作，gap between the rich and poor 表示贫富差距。',
+        translation: '尽管有种种好处，城市生活也有其缺点；例如，生活成本通常比农村地区高得多。此外，一些人未能找到工作，这导致了无家可归和日益扩大的贫富差距。'
       },
       {
         id: 'p4',
-        question: 'The cat is [ ] the bed.',
+        question: 'Urban living can be [ ] [ ] because of problems like [ ] [ ] [ ] [ ]. Many modern cities are described as [ ] [ ] because they [ ] [ ] [ ] [ ] [ ], where people do not even know their neighbours.',
         blanks: [
-          {
-            id: 'b1',
-            correctAnswer: 'under',
-            options: ['on', 'in', 'at', 'under']
-          }
+          { id: 'b1', correctAnswer: 'extremely', options: ['extremely', 'very', 'highly', 'incredibly'] },
+          { id: 'b2', correctAnswer: 'stressful', options: ['stressful', 'stressful', 'tense', 'anxious'] },
+          { id: 'b3', correctAnswer: 'traffic', options: ['traffic', 'transport', 'vehicle', 'car'] },
+          { id: 'b4', correctAnswer: 'congestion', options: ['congestion', 'jam', 'gridlock', 'crowding'] },
+          { id: 'b5', correctAnswer: 'and', options: ['and', 'or', 'as', 'but'] },
+          { id: 'b6', correctAnswer: 'crime', options: ['crime', 'criminality', 'offenses', 'illegal activities'] },
+          { id: 'b7', correctAnswer: 'concrete', options: ['concrete', 'cement', 'stone', 'brick'] },
+          { id: 'b8', correctAnswer: 'jungles', options: ['jungles', 'forests', 'wildernesses', 'wastelands'] },
+          { id: 'b9', correctAnswer: 'lack', options: ['lack', 'have', 'need', 'want'] },
+          { id: 'b10', correctAnswer: 'a', options: ['a', 'an', 'the', 'some'] },
+          { id: 'b11', correctAnswer: 'sense', options: ['sense', 'feeling', 'awareness', 'understanding'] },
+          { id: 'b12', correctAnswer: 'of', options: ['of', 'for', 'in', 'with'] },
+          { id: 'b13', correctAnswer: 'community', options: ['community', 'neighborhood', 'society', 'group'] }
         ],
-        explanation: 'under表示在...下面，所以用under。',
-        feedback: '正确！under表示在...下面，用于表示物体下方的位置。'
+        explanation: 'extremely stressful 表示压力极其巨大，traffic congestion and crime 表示交通拥堵和犯罪，concrete jungles 表示混凝土丛林，lack a sense of community 表示缺乏社区归属感，符合句子语境。',
+        feedback: '正确！extremely stressful 表示压力极其巨大，traffic congestion and crime 表示交通拥堵和犯罪，concrete jungles 表示混凝土丛林，lack a sense of community 表示缺乏社区归属感。',
+        translation: '由于交通拥堵和犯罪等问题，城市生活压力极其巨大。许多现代城市被描述为“混凝土丛林”，因为它们缺乏社区归属感，人们甚至不认识自己的邻居。'
       },
       {
         id: 'p5',
-        question: 'He arrived [ ] time for the meeting.',
+        question: 'Creating [ ] [ ] in city centres can significantly [ ] [ ] [ ] [ ]. By [ ] [ ], local authorities encourage people to walk or cycle, which helps to reduce [ ] [ ] [ ].',
         blanks: [
-          {
-            id: 'b1',
-            correctAnswer: 'on',
-            options: ['on', 'in', 'at', 'under']
-          }
+          { id: 'b1', correctAnswer: 'pedestrian', options: ['pedestrian', 'walking', 'foot', 'people'] },
+          { id: 'b2', correctAnswer: 'zones', options: ['zones', 'areas', 'regions', 'districts'] },
+          { id: 'b3', correctAnswer: 'improve', options: ['improve', 'enhance', 'better', 'upgrade'] },
+          { id: 'b4', correctAnswer: 'the', options: ['the', 'a', 'any', 'some'] },
+          { id: 'b5', correctAnswer: 'local', options: ['local', 'area', 'regional', 'community'] },
+          { id: 'b6', correctAnswer: 'environment', options: ['environment', 'surroundings', 'conditions', 'setting'] },
+          { id: 'b7', correctAnswer: 'banning', options: ['banning', 'prohibiting', 'forbidding', 'outlawing'] },
+          { id: 'b8', correctAnswer: 'cars', options: ['cars', 'vehicles', 'automobiles', 'motors'] },
+          { id: 'b9', correctAnswer: 'dependence', options: ['dependence', 'reliance', 'dependency', 'need'] },
+          { id: 'b10', correctAnswer: 'on', options: ['on', 'for', 'in', 'with'] },
+          { id: 'b11', correctAnswer: 'cars', options: ['cars', 'vehicles', 'automobiles', 'motors'] }
         ],
-        explanation: 'on time是固定搭配，表示准时，所以用on。',
-        feedback: '正确！on time是固定搭配，表示准时。'
+        explanation: 'pedestrian zones 表示步行区，improve the local environment 表示改善当地环境，banning cars 表示禁止车辆，dependence on cars 表示对汽车的依赖，符合句子语境。',
+        feedback: '正确！pedestrian zones 表示步行区，improve the local environment 表示改善当地环境，banning cars 表示禁止车辆，dependence on cars 表示对汽车的依赖。',
+        translation: '在市中心创建步行区可以显著改善当地环境。通过禁止车辆，地方当局鼓励人们步行或骑行，这有助于减少对汽车的依赖。'
       },
       {
         id: 'p6',
-        question: 'She is interested [ ] learning English.',
+        question: 'Reducing car use is vital because it is linked to [ ] [ ] [ ] [ ]. Ultimately, pedestrian areas are [ ] [ ] [ ] [ ] for both residents and tourists.',
         blanks: [
-          {
-            id: 'b1',
-            correctAnswer: 'in',
-            options: ['on', 'in', 'at', 'under']
-          }
+          { id: 'b1', correctAnswer: 'health', options: ['health', 'wellness', 'fitness', 'physical'] },
+          { id: 'b2', correctAnswer: 'problems', options: ['problems', 'issues', 'concerns', 'conditions'] },
+          { id: 'b3', correctAnswer: 'like', options: ['like', 'such as', 'including', 'for example'] },
+          { id: 'b4', correctAnswer: 'obesity', options: ['obesity', 'overweight', 'fatness', 'heaviness'] },
+          { id: 'b5', correctAnswer: 'safer', options: ['safer', 'more secure', 'more protected', 'less dangerous'] },
+          { id: 'b6', correctAnswer: 'and', options: ['and', 'or', 'as', 'but'] },
+          { id: 'b7', correctAnswer: 'more', options: ['more', 'increasingly', 'even', 'further'] },
+          { id: 'b8', correctAnswer: 'attractive', options: ['attractive', 'appealing', 'charming', 'inviting'] }
         ],
-        explanation: 'be interested in是固定搭配，表示对...感兴趣，所以用in。',
-        feedback: '正确！be interested in是固定搭配，表示对...感兴趣，后面接动名词。'
-      },
-      {
-        id: 'p7',
-        question: 'We are proud [ ] our achievements.',
-        blanks: [
-          {
-            id: 'b1',
-            correctAnswer: 'of',
-            options: ['on', 'in', 'at', 'of']
-          }
-        ],
-        explanation: 'be proud of是固定搭配，表示为...感到骄傲，所以用of。',
-        feedback: '正确！be proud of是固定搭配，表示为...感到骄傲。'
-      },
-      {
-        id: 'p8',
-        question: 'He is good [ ] playing basketball.',
-        blanks: [
-          {
-            id: 'b1',
-            correctAnswer: 'at',
-            options: ['on', 'in', 'at', 'of']
-          }
-        ],
-        explanation: 'be good at是固定搭配，表示擅长，所以用at。',
-        feedback: '正确！be good at是固定搭配，表示擅长，后面接动名词。'
-      },
-      {
-        id: 'p9',
-        question: 'She is afraid [ ] heights.',
-        blanks: [
-          {
-            id: 'b1',
-            correctAnswer: 'of',
-            options: ['on', 'in', 'at', 'of']
-          }
-        ],
-        explanation: 'be afraid of是固定搭配，表示害怕，所以用of。',
-        feedback: '正确！be afraid of是固定搭配，表示害怕。'
-      },
-      {
-        id: 'p10',
-        question: 'We are looking forward [ ] the weekend.',
-        blanks: [
-          {
-            id: 'b1',
-            correctAnswer: 'to',
-            options: ['on', 'in', 'at', 'to']
-          }
-        ],
-        explanation: 'look forward to是固定搭配，表示期待，所以用to。',
-        feedback: '正确！look forward to是固定搭配，表示期待，后面接名词或动名词。'
+        explanation: 'health problems like obesity 表示像肥胖症之类的健康问题，safer and more attractive 表示更安全且更具吸引力，符合句子语境。',
+        feedback: '正确！health problems like obesity 表示像肥胖症之类的健康问题，safer and more attractive 表示更安全且更具吸引力。',
+        translation: '减少汽车使用至关重要，因为它与像肥胖症之类的健康问题有关。归根结底，步行区对居民和游客来说都更安全且更具吸引力。'
       }
     ]
   },
   {
-    id: 'unit4',
-    title: 'Unit 4 测试单元',
-    description: '包含Unit 1中的3个测试题，用于手动测试网站功能',
+    id: 'unitTest',
+    title: 'Unit Test',
+    description: '包含各单元的测试题，用于检验学习效果',
     level: 'intermediate',
     completedCount: 0,
     practiceCount: 3,
