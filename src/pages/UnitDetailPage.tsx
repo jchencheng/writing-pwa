@@ -79,10 +79,21 @@ const UnitDetailPage: React.FC<UnitDetailPageProps> = ({
 
   const handleSubmit = () => {
     const currentPractice = filteredPractices[currentPracticeIndex];
-    const correctAnswers = currentPractice.blanks.map(blank => blank.correctAnswer.toLowerCase().trim());
-    const userAnswersLower = userAnswers.map(answer => answer.toLowerCase().trim());
+    const correctAnswers = currentPractice.blanks.map(blank => (blank.correctAnswer || '').toLowerCase().trim());
     
-    const correctness = userAnswersLower.map((answer, index) => answer === correctAnswers[index]);
+    // 确保 userAnswers 长度与 blanks 长度一致
+    const paddedUserAnswers = [...userAnswers];
+    while (paddedUserAnswers.length < currentPractice.blanks.length) {
+      paddedUserAnswers.push('');
+    }
+    
+    const userAnswersLower = paddedUserAnswers.map(answer => (answer || '').toLowerCase().trim());
+    
+    // 使用 correctAnswers 的长度来遍历，确保所有填空都被判定
+    const correctness = correctAnswers.map((correctAnswer, index) => {
+      const userAnswer = userAnswersLower[index] || '';
+      return userAnswer === correctAnswer;
+    });
     setIsCorrect(correctness);
     setShowFeedback(true);
     
@@ -200,7 +211,8 @@ const UnitDetailPage: React.FC<UnitDetailPageProps> = ({
   };
 
   const currentPractice = filteredPractices[currentPracticeIndex];
-  const questionParts = currentPractice.question.split('[ ]');
+  // 支持多种挖空格式：[ ], (), _, __, ___ 等
+  const questionParts = currentPractice.question.split(/\[ \]|\(\)|_+/);
 
   return (
     <div className="min-h-screen app-container">
@@ -303,39 +315,51 @@ const UnitDetailPage: React.FC<UnitDetailPageProps> = ({
             </div>
 
             {currentPractice.translation && (
-              <div className="mt-6 p-6 bg-[#FFF5F8] rounded-[24px] border-2 border-[#F8A5D1]/20 mb-8">
+              <div className={`mt-6 p-6 rounded-[24px] border-2 mb-8 ${
+                darkMode 
+                  ? 'bg-pink-900/20 border-[#F8A5D1]/30' 
+                  : 'bg-[#FFF5F8] border-[#F8A5D1]/20'
+              }`}>
                 <div className="flex items-center gap-2 mb-3">
-                  <svg className="w-5 h-5 text-[#F8A5D1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-5 h-5 ${darkMode ? 'text-[#FF85A2]' : 'text-[#F8A5D1]'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
                   </svg>
-                  <p className="font-medium text-[#6B5063]">中文翻译：</p>
+                  <p className={`font-medium ${darkMode ? 'text-white' : 'text-[#6B5063]'}`}>中文翻译：</p>
                 </div>
-                <p className="text-[#8A6F81]">{currentPractice.translation}</p>
+                <p className={`${darkMode ? 'text-white' : 'text-[#8A6F81]'}`}>{currentPractice.translation}</p>
               </div>
             )}
 
             {showFeedback && (
-              <div className={`mt-8 p-6 rounded-[24px] border-2 ${
+              <div className={`mt-8 p-6 rounded-[24px] border-2 scale-in ${
                 isCorrect.every(c => c) 
-                  ? 'bg-[#D5F4EE] border-[#B4E4D8]' 
-                  : 'bg-[#FFD6D6]/50 border-[#FFA8A8]/50'
-              } scale-in`}>
+                  ? (darkMode 
+                      ? 'bg-green-900/20 border-[#B4E4D8]/50' 
+                      : 'bg-[#D5F4EE] border-[#B4E4D8]')
+                  : (darkMode 
+                      ? 'bg-red-900/20 border-[#FFA8A8]/50' 
+                      : 'bg-[#FFD6D6]/50 border-[#FFA8A8]/50')
+              }`}>
                 <div className="flex items-center gap-2 mb-3">
                   {isCorrect.every(c => c) ? (
-                    <svg className="w-6 h-6 text-[#3A6960]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className={`w-6 h-6 ${darkMode ? 'text-[#B4E4D8]' : 'text-[#3A6960]'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   ) : (
-                    <svg className="w-6 h-6 text-[#8A4A4A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className={`w-6 h-6 ${darkMode ? 'text-[#FFA8A8]' : 'text-[#8A4A4A]'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   )}
-                  <h3 className="font-semibold text-lg text-[#6B5063]">答案解析</h3>
+                  <h3 className={`font-semibold text-lg ${darkMode ? 'text-white' : 'text-[#6B5063]'}`}>答案解析</h3>
                 </div>
-                <p className="text-[#8A6F81] mb-4">{currentPractice.explanation}</p>
+                <p className={`mb-4 ${darkMode ? 'text-white' : 'text-[#8A6F81]'}`}>{currentPractice.explanation}</p>
                 <div className="flex items-center gap-2">
-                  <span className="font-medium text-[#6B5063]">正确答案：</span>
-                  <span className="bg-[#FFF5F8] px-4 py-2 rounded-[18px] text-[#6B5063] font-medium">
+                  <span className={`font-medium ${darkMode ? 'text-white' : 'text-[#6B5063]'}`}>正确答案：</span>
+                  <span className={`px-4 py-2 rounded-[18px] font-medium ${
+                    darkMode 
+                      ? 'bg-pink-900/30 text-white' 
+                      : 'bg-[#FFF5F8] text-[#6B5063]'
+                  }`}>
                     {currentPractice.blanks.map(blank => blank.correctAnswer).join(', ')}
                   </span>
                 </div>

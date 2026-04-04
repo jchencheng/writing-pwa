@@ -7,6 +7,7 @@ interface HomePageProps {
   onUnitSelect: (unit: PracticeUnit) => void;
   onViewErrorBook: () => void;
   onViewSettings: () => void;
+  onAddCustomUnit: () => void;
   lastPracticedUnitId: string | null;
   onStudyUnit: (unit: PracticeUnit) => void;
   darkMode: boolean;
@@ -19,6 +20,7 @@ const HomePage: React.FC<HomePageProps> = ({
   onUnitSelect, 
   onViewErrorBook, 
   onViewSettings, 
+  onAddCustomUnit,
   lastPracticedUnitId,
   onStudyUnit,
   darkMode,
@@ -172,6 +174,19 @@ const HomePage: React.FC<HomePageProps> = ({
               </button>
             </div>
           )}
+        </div>
+
+        {/* 添加自定义单元 */}
+        <div className="mb-8">
+          <button
+            onClick={onAddCustomUnit}
+            className="w-full btn-primary flex items-center justify-center gap-2 py-4 rounded-[24px] btn-press"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+            <span className="text-lg font-medium">添加自定义练习单元</span>
+          </button>
         </div>
 
         {/* 练习单元列表 */}

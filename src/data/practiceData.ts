@@ -384,7 +384,7 @@ export const practiceUnits: PracticeUnit[] = [
       },
       {
         id: 'p2',
-        question: 'While ethical concerns exist, researchers aim to [ ] [ ] [ ] [ ] [ ] [ ] [ ]. Furthermore, it is worth noting that testing for the cosmetics industry is now [ ] [ ] [ ] [ ].',
+        question: 'While ethical concerns exist, researchers aim to [ ] [ ] [ ] [ ] [ ] [ ]. Furthermore, it is worth noting that testing for the cosmetics industry is now [ ] [ ] [ ] [ ].',
         blanks: [
           { id: 'b1', correctAnswer: 'minimise', options: ['minimise', 'reduce', 'decrease', 'lessen'] },
           { id: 'b2', correctAnswer: 'the', options: ['the', 'a', 'any', 'some'] },
@@ -403,7 +403,7 @@ export const practiceUnits: PracticeUnit[] = [
       },
       {
         id: 'p3',
-        question: 'Conversely, animal rights activists argue that the purported benefits of research using animals simply [ ] [ ] [ ] [ ] [ ] [ ] [ ]. They emphasize that there are [ ] [ ] [ ] [ ], asserting that humans have [ ] [ ] [ ] to do experiments on animals.',
+        question: 'Conversely, animal rights activists argue that the purported benefits of research using animals simply [ ] [ ] [ ] [ ] [ ] [ ]. They emphasize that there are [ ] [ ] [ ] [ ], asserting that humans have [ ] [ ] [ ] to do experiments on animals.',
         blanks: [
           { id: 'b1', correctAnswer: 'do', options: ['do', 'can', 'will', 'may'] },
           { id: 'b2', correctAnswer: 'not', options: ['not', 'never', 'no', 'nor'] },

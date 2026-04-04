@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import type { UserAnswer } from '../types';
+import type { UserAnswer, PracticeUnit } from '../types';
 
 interface SettingsPageProps {
   userAnswers: UserAnswer[];
   errorBook: UserAnswer[];
   practiceProgress: { [unitId: string]: number };
+  customUnits: PracticeUnit[];
   onBack: () => void;
   onImportData: (data: any) => void;
   darkMode: boolean;
@@ -15,6 +16,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
   userAnswers,
   errorBook,
   practiceProgress,
+  customUnits,
   onBack,
   onImportData,
   darkMode,
@@ -28,6 +30,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
       userAnswers,
       errorBook,
       practiceProgress,
+      customUnits,
       exportDate: new Date().toISOString()
     };
 
@@ -51,7 +54,15 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
         const jsonString = event.target?.result as string;
         const data = JSON.parse(jsonString);
 
-        if (!data.userAnswers || !data.errorBook || !data.practiceProgress) {
+        // 验证数据格式 - 至少要有一种数据
+        const hasValidData = (
+          (data.userAnswers && Array.isArray(data.userAnswers)) ||
+          (data.errorBook && Array.isArray(data.errorBook)) ||
+          (data.practiceProgress && typeof data.practiceProgress === 'object') ||
+          (data.customUnits && Array.isArray(data.customUnits))
+        );
+
+        if (!hasValidData) {
           throw new Error('数据格式不正确');
         }
 
@@ -173,14 +184,14 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
             )}
           </div>
 
-          <div className="p-6 bg-[#FFF5F8] rounded-[24px] border-2 border-[#F8A5D1]/30">
+          <div className={`p-6 rounded-[24px] border-2 border-[#F8A5D1]/30 ${darkMode ? 'bg-gray-800' : 'bg-[#FFF5F8]'}`}>
             <div className="flex items-center gap-2 mb-3">
               <svg className="w-5 h-5 text-[#F8A5D1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <h3 className="text-sm font-medium text-[#6B5063]">数据说明</h3>
+              <h3 className={`text-sm font-medium ${darkMode ? 'text-white' : 'text-[#6B5063]'}`}>数据说明</h3>
             </div>
-            <ul className="text-sm text-[#8A6F81] space-y-2">
+            <ul className={`text-sm space-y-2 ${darkMode ? 'text-gray-300' : 'text-[#8A6F81]'}`}>
               <li className="flex items-start gap-2">
                 <span className="text-[#F8A5D1]">•</span>
                 <span>学习记录包括：答题历史、错题本和练习进度</span>

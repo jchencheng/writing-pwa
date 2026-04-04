@@ -72,8 +72,8 @@ const UnitStudyPage: React.FC<UnitStudyPageProps> = ({ unit, onStartPractice, on
                 </div>
               ))
             ) : (
-              <div className="p-6 bg-[#FFF5F8] rounded-[24px] border-2 border-[#F8A5D1]/20">
-                <p className="text-[#8A6F81]">本单元暂无学习词组</p>
+              <div className={`p-6 rounded-[24px] border-2 border-[#F8A5D1]/20 ${darkMode ? 'bg-gray-800' : 'bg-[#FFF5F8]'}`}>
+                <p className={darkMode ? 'text-gray-300' : 'text-[#8A6F81]'}>本单元暂无学习词组</p>
               </div>
             )}
           </div>

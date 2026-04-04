@@ -5,6 +5,7 @@ import UnitStudyPage from './pages/UnitStudyPage';
 import PracticeReportPage from './pages/PracticeReportPage';
 import ErrorBookPage from './pages/ErrorBookPage';
 import SettingsPage from './pages/SettingsPage';
+import CustomUnitPage from './pages/CustomUnitPage';
 import { practiceUnits } from './data/practiceData';
 import type { PracticeUnit, UserAnswer, PracticeReport } from './types';
 
@@ -15,7 +16,8 @@ const STORAGE_KEYS = {
   ERROR_BOOK: 'writingPractice_errorBook',
   LAST_PRACTICED_UNIT: 'writingPractice_lastPracticedUnitId',
   PRACTICE_POSITIONS: 'writingPractice_positions',
-  DARK_MODE: 'writingPractice_darkMode'
+  DARK_MODE: 'writingPractice_darkMode',
+  CUSTOM_UNITS: 'writingPractice_customUnits'
 };
 
 // IndexedDB 数据库名称和版本
@@ -113,7 +115,7 @@ const storage = {
 // 主应用组件
 const App: React.FC = () => {
   // 状态管理
-  const [currentPage, setCurrentPage] = useState<'home' | 'study' | 'unit' | 'report' | 'errorBook' | 'settings'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'study' | 'unit' | 'report' | 'errorBook' | 'settings' | 'custom'>('home');
   const [selectedUnit, setSelectedUnit] = useState<PracticeUnit | null>(null);
   const [practiceReport, setPracticeReport] = useState<PracticeReport | null>(null);
   const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
@@ -123,6 +125,7 @@ const App: React.FC = () => {
   const [practicePositions, setPracticePositions] = useState<{ [unitId: string]: number }>({});
   const [practiceMode, setPracticeMode] = useState<'retest' | 'retryErrors'>('retest');
   const [darkMode, setDarkMode] = useState<boolean>(false);
+  const [customUnits, setCustomUnits] = useState<PracticeUnit[]>([]);
 
   // 从存储加载数据
   useEffect(() => {
@@ -137,14 +140,16 @@ const App: React.FC = () => {
           savedUserAnswers,
           savedLastPracticedUnitId,
           savedPositions,
-          savedDarkMode
+          savedDarkMode,
+          savedCustomUnits
         ] = await Promise.all([
           storage.get(STORAGE_KEYS.PROGRESS),
           storage.get(STORAGE_KEYS.ERROR_BOOK),
           storage.get(STORAGE_KEYS.USER_ANSWERS),
           storage.get(STORAGE_KEYS.LAST_PRACTICED_UNIT),
           storage.get(STORAGE_KEYS.PRACTICE_POSITIONS),
-          storage.get(STORAGE_KEYS.DARK_MODE)
+          storage.get(STORAGE_KEYS.DARK_MODE),
+          storage.get(STORAGE_KEYS.CUSTOM_UNITS)
         ]);
         
         console.log('\n=== Loaded data ===');
@@ -154,6 +159,7 @@ const App: React.FC = () => {
         console.log('Loaded last practiced unit:', savedLastPracticedUnitId);
         console.log('Loaded positions:', savedPositions);
         console.log('Loaded dark mode:', savedDarkMode);
+        console.log('Loaded custom units:', savedCustomUnits);
         
         // 设置状态
         if (savedProgress && typeof savedProgress === 'object') {
@@ -186,6 +192,11 @@ const App: React.FC = () => {
           setDarkMode(savedDarkMode);
         }
         
+        if (savedCustomUnits && Array.isArray(savedCustomUnits)) {
+          console.log('Setting custom units:', savedCustomUnits);
+          setCustomUnits(savedCustomUnits as PracticeUnit[]);
+        }
+        
         console.log('=== Data loaded successfully ===');
       } catch (error) {
         console.error('Error loading data:', error);
@@ -206,7 +217,8 @@ const App: React.FC = () => {
       userAnswers,
       lastPracticedUnitId,
       positions: practicePositions,
-      darkMode
+      darkMode,
+      customUnits
     };
     
     console.log('Data to save:', data);
@@ -219,14 +231,16 @@ const App: React.FC = () => {
         userAnswersSaved,
         lastPracticedUnitSaved,
         positionsSaved,
-        darkModeSaved
+        darkModeSaved,
+        customUnitsSaved
       ] = await Promise.all([
         storage.set(STORAGE_KEYS.PROGRESS, practiceProgress),
         storage.set(STORAGE_KEYS.ERROR_BOOK, errorBook),
         storage.set(STORAGE_KEYS.USER_ANSWERS, userAnswers),
         storage.set(STORAGE_KEYS.LAST_PRACTICED_UNIT, lastPracticedUnitId),
         storage.set(STORAGE_KEYS.PRACTICE_POSITIONS, practicePositions),
-        storage.set(STORAGE_KEYS.DARK_MODE, darkMode)
+        storage.set(STORAGE_KEYS.DARK_MODE, darkMode),
+        storage.set(STORAGE_KEYS.CUSTOM_UNITS, customUnits)
       ]);
       
       console.log('Save results:', {
@@ -235,14 +249,15 @@ const App: React.FC = () => {
         userAnswersSaved,
         lastPracticedUnitSaved,
         positionsSaved,
-        darkModeSaved
+        darkModeSaved,
+        customUnitsSaved
       });
       
       console.log('=== Data saved successfully ===');
     } catch (error) {
       console.error('Error saving data:', error);
     }
-  }, [practiceProgress, errorBook, userAnswers, lastPracticedUnitId, practicePositions, darkMode]);
+  }, [practiceProgress, errorBook, userAnswers, lastPracticedUnitId, practicePositions, darkMode, customUnits]);
 
   // 当状态变化时保存数据
   useEffect(() => {
@@ -252,10 +267,11 @@ const App: React.FC = () => {
         errorBook.length > 0 || 
         userAnswers.length > 0 || 
         lastPracticedUnitId !== null || 
-        Object.keys(practicePositions).length > 0) {
+        Object.keys(practicePositions).length > 0 ||
+        customUnits.length > 0) {
       saveData();
     }
-  }, [practiceProgress, errorBook, userAnswers, lastPracticedUnitId, practicePositions]);
+  }, [practiceProgress, errorBook, userAnswers, lastPracticedUnitId, practicePositions, customUnits]);
 
   // 导航到单元详情页
   const handleUnitSelect = useCallback((unit: PracticeUnit) => {
@@ -363,7 +379,7 @@ const App: React.FC = () => {
   const handleImportData = useCallback((data: any) => {
     console.log('=== Importing data ===');
     console.log('Imported data:', data);
-    
+
     if (data.practiceProgress) {
       setPracticeProgress(data.practiceProgress);
     }
@@ -379,7 +395,10 @@ const App: React.FC = () => {
     if (data.practicePositions) {
       setPracticePositions(data.practicePositions);
     }
-    
+    if (data.customUnits) {
+      setCustomUnits(data.customUnits);
+    }
+
     console.log('=== Data imported successfully ===');
   }, []);
 
@@ -400,17 +419,31 @@ const App: React.FC = () => {
     setCurrentPage('study');
   }, []);
 
+  // 导航到自定义单元页面
+  const handleAddCustomUnit = useCallback(() => {
+    setCurrentPage('custom');
+  }, []);
+
+  // 处理自定义单元创建
+  const handleUnitCreated = useCallback((unit: PracticeUnit) => {
+    setCustomUnits(prev => [...prev, unit]);
+    setSelectedUnit(unit);
+    setLastPracticedUnitId(unit.id);
+    setCurrentPage('study');
+  }, []);
+
   // 渲染当前页面
   const renderCurrentPage = () => {
     switch (currentPage) {
       case 'home':
         return (
           <HomePage
-            units={practiceUnits}
+            units={[...practiceUnits, ...customUnits]}
             progress={practiceProgress}
             onUnitSelect={handleUnitSelect}
             onViewErrorBook={handleViewErrorBook}
             onViewSettings={handleViewSettings}
+            onAddCustomUnit={handleAddCustomUnit}
             lastPracticedUnitId={lastPracticedUnitId}
             onStudyUnit={handleStudyUnit}
             darkMode={darkMode}
@@ -466,7 +499,7 @@ const App: React.FC = () => {
         return (
           <ErrorBookPage
             errorBook={errorBook}
-            units={practiceUnits}
+            units={[...practiceUnits, ...customUnits]}
             onBack={handleBackToHome}
             onDeleteError={(errorId) => {
               setErrorBook(prev => prev.filter((error: UserAnswer) => 
@@ -477,12 +510,22 @@ const App: React.FC = () => {
             onToggleDarkMode={toggleDarkMode}
           />
         );
+      case 'custom':
+        return (
+          <CustomUnitPage
+            onBack={handleBackToHome}
+            onUnitCreated={handleUnitCreated}
+            darkMode={darkMode}
+            onToggleDarkMode={toggleDarkMode}
+          />
+        );
       case 'settings':
         return (
           <SettingsPage
             userAnswers={userAnswers}
             errorBook={errorBook}
             practiceProgress={practiceProgress}
+            customUnits={customUnits}
             onBack={handleBackToHome}
             onImportData={handleImportData}
             darkMode={darkMode}
@@ -492,11 +535,12 @@ const App: React.FC = () => {
       default:
         return (
           <HomePage
-            units={practiceUnits}
+            units={[...practiceUnits, ...customUnits]}
             progress={practiceProgress}
             onUnitSelect={handleUnitSelect}
             onViewErrorBook={handleViewErrorBook}
             onViewSettings={handleViewSettings}
+            onAddCustomUnit={handleAddCustomUnit}
             lastPracticedUnitId={lastPracticedUnitId}
             onStudyUnit={handleStudyUnit}
             darkMode={darkMode}
