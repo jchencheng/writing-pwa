@@ -507,7 +507,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-light">
+    <div className={`min-h-screen ${darkMode ? 'dark' : ''}`}>
       {renderCurrentPage()}
     </div>
   );
