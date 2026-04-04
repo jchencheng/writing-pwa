@@ -12,6 +12,8 @@ interface UnitDetailPageProps {
   practiceMode?: 'retest' | 'retryErrors';
   errorBook?: UserAnswer[];
   initialPosition?: number;
+  darkMode: boolean;
+  onToggleDarkMode: () => void;
 }
 
 const UnitDetailPage: React.FC<UnitDetailPageProps> = ({ 
@@ -24,7 +26,9 @@ const UnitDetailPage: React.FC<UnitDetailPageProps> = ({
   onRemoveError, 
   practiceMode = 'retest',
   errorBook = [],
-  initialPosition = 0 
+  initialPosition = 0,
+  darkMode,
+  onToggleDarkMode
 }) => {
   const [currentPracticeIndex, setCurrentPracticeIndex] = useState(initialPosition);
   const [userAnswers, setUserAnswers] = useState<string[]>([]);
@@ -34,33 +38,26 @@ const UnitDetailPage: React.FC<UnitDetailPageProps> = ({
   const [allUserAnswers, setAllUserAnswers] = useState<{[practiceId: string]: {userAnswers: string[], isCorrect: boolean[]}}>({});
   const [filteredPractices, setFilteredPractices] = useState(unit.practices);
   
-  // 根据练习模式过滤题目
   useEffect(() => {
     if (practiceMode === 'retryErrors') {
-      // 从错题本中获取当前单元的错题
       const errorPracticeIds = new Set<string>();
       
-      // 收集当前单元的所有错题对应的练习ID
       errorBook.forEach(error => {
         if (error.unitId === unit.id) {
           errorPracticeIds.add(error.practiceId);
         }
       });
       
-      // 过滤出有错误记录的题目
       const errorPractices = unit.practices.filter(practice => {
         return errorPracticeIds.has(practice.id);
       });
       
       setFilteredPractices(errorPractices.length > 0 ? errorPractices : unit.practices);
     } else {
-      // 重新测试模式，显示所有题目
       setFilteredPractices(unit.practices);
     }
-    // 不要强制重置为0，保持使用initialPosition或当前位置
   }, [practiceMode, unit.practices, errorBook, unit.id]);
 
-  // 初始化用户答案数组
   useEffect(() => {
     const initialAnswers = filteredPractices[currentPracticeIndex].blanks.map(() => '');
     setUserAnswers(initialAnswers);
@@ -68,21 +65,18 @@ const UnitDetailPage: React.FC<UnitDetailPageProps> = ({
     setIsCorrect([]);
   }, [currentPracticeIndex, filteredPractices]);
 
-  // 监听位置变化并更新
   useEffect(() => {
     if (onPositionUpdate) {
       onPositionUpdate(unit.id, currentPracticeIndex);
     }
   }, [currentPracticeIndex, unit.id, onPositionUpdate]);
 
-  // 处理答案输入
   const handleAnswerChange = (index: number, value: string) => {
     const newAnswers = [...userAnswers];
     newAnswers[index] = value;
     setUserAnswers(newAnswers);
   };
 
-  // 提交答案
   const handleSubmit = () => {
     const currentPractice = filteredPractices[currentPracticeIndex];
     const correctAnswers = currentPractice.blanks.map(blank => blank.correctAnswer.toLowerCase().trim());
@@ -92,7 +86,6 @@ const UnitDetailPage: React.FC<UnitDetailPageProps> = ({
     setIsCorrect(correctness);
     setShowFeedback(true);
     
-    // 检查是否有错题，如果有就添加到错题本；如果答对了，就从错题本中移除
     correctness.forEach((isCorrect, blankIndex) => {
       if (!isCorrect && onAddError) {
         const error: UserAnswer = {
@@ -107,13 +100,11 @@ const UnitDetailPage: React.FC<UnitDetailPageProps> = ({
         };
         onAddError(error);
       } else if (isCorrect && onRemoveError) {
-        // 如果用户答对了，从错题本中移除该题目
         const errorId = `${unit.id}-${currentPractice.id}-${blankIndex}`;
         onRemoveError(errorId);
       }
     });
     
-    // 保存当前练习的答案和正确性
     const updatedAnswers = {
       ...allUserAnswers,
       [currentPractice.id]: {
@@ -122,34 +113,27 @@ const UnitDetailPage: React.FC<UnitDetailPageProps> = ({
       }
     };
     
-    // 计算当前进度：已完成的题目数 / 总题目数
     const completedCount = currentPracticeIndex + 1;
     const totalCount = unit.practices.length;
     const progress = completedCount / totalCount;
     
-    // 保存答案
     setAllUserAnswers(updatedAnswers);
     
-    // 每做一道题就更新进度
     if (onProgressUpdate) {
       onProgressUpdate(unit.id, progress);
     }
   };
 
-  // 下一题
   const handleNext = () => {
     if (currentPracticeIndex < filteredPractices.length - 1) {
       const nextPosition = currentPracticeIndex + 1;
       setCurrentPracticeIndex(nextPosition);
     } else {
-      // 练习完成，生成报告
       const endTime = Date.now();
       const timeSpent = Math.round((endTime - startTime) / 1000);
       
-      // 计算正确率
       const totalQuestions = filteredPractices.length;
       
-      // 计算实际正确的题目数量
       let correctCount = 0;
       const incorrectAnswers: UserAnswer[] = [];
       
@@ -160,7 +144,6 @@ const UnitDetailPage: React.FC<UnitDetailPageProps> = ({
           if (isPracticeCorrect) {
             correctCount++;
           } else {
-            // 记录错题
             practiceResult.isCorrect.forEach((isCorrect: boolean, blankIndex: number) => {
               if (!isCorrect) {
                 incorrectAnswers.push({
@@ -177,7 +160,6 @@ const UnitDetailPage: React.FC<UnitDetailPageProps> = ({
             });
           }
         } else {
-          // 如果用户没有提交答案，将所有空视为错误
           practice.blanks.forEach((blank, blankIndex) => {
             incorrectAnswers.push({
               unitId: unit.id,
@@ -205,20 +187,11 @@ const UnitDetailPage: React.FC<UnitDetailPageProps> = ({
         timeSpent,
         incorrectAnswers
       };
-
-      console.log('=== Generating practice report ===');
-      console.log('Unit ID:', unit.id);
-      console.log('Total questions:', totalQuestions);
-      console.log('Correct answers:', correctCount);
-      console.log('Accuracy:', accuracy);
-      console.log('Report to send:', report);
       
       onPracticeComplete(report);
-      console.log('=== onPracticeComplete called ===');
     }
   };
 
-  // 上一题
   const handlePrevious = () => {
     if (currentPracticeIndex > 0) {
       const prevPosition = currentPracticeIndex - 1;
@@ -230,62 +203,96 @@ const UnitDetailPage: React.FC<UnitDetailPageProps> = ({
   const questionParts = currentPractice.question.split('[ ]');
 
   return (
-    <div className="min-h-screen bg-neutral-light">
-      {/* 导航栏 */}
-      <header className="bg-white shadow-sm">
+    <div className="min-h-screen app-container">
+      <header className="glass-nav sticky top-0 z-40">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <button
             onClick={onBack}
-            className="btn-secondary flex items-center"
+            className="btn-secondary flex items-center gap-2 text-sm"
           >
-            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
             返回
           </button>
-          <h1 className="text-xl font-bold text-primary">{unit.title}</h1>
-          <div className="w-12"></div> {/* 占位，保持标题居中 */}
+          <h1 className="text-lg font-bold bg-gradient-to-r from-[#F8A5D1] to-[#FF85A2] bg-clip-text text-transparent">
+            {unit.title}
+          </h1>
+          <button
+            onClick={onToggleDarkMode}
+            className="btn-secondary flex items-center gap-2 text-sm px-4 py-2"
+            title={darkMode ? "切换到浅色模式" : "切换到深色模式"}
+          >
+            {darkMode ? (
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+            ) : (
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+              </svg>
+            )}
+          </button>
         </div>
       </header>
 
-      {/* 主内容 */}
-      <main className="container mx-auto px-4 py-8">
-        {/* 题目进度 */}
-        <div className="mb-6">
-          <div className="flex justify-between mb-2">
-            <span className="text-sm font-medium">题目 {currentPracticeIndex + 1} / {filteredPractices.length}</span>
-            <span className="text-sm text-gray-600">{Math.round(((currentPracticeIndex + 1) / filteredPractices.length) * 100)}% 完成</span>
+      <main className="container mx-auto px-4 py-8 page-transition">
+        <div className="mb-8">
+          <div className="flex justify-between mb-3 items-center">
+            <div className="flex items-center gap-2">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-[#F8A5D1] to-[#FF85A2] flex items-center justify-center">
+                <span className="text-white font-bold text-sm">{currentPracticeIndex + 1}</span>
+              </div>
+              <span className="text-[#6B5063] font-medium">/ {filteredPractices.length}</span>
+            </div>
+            <span className="tag-primary">{Math.round(((currentPracticeIndex + 1) / filteredPractices.length) * 100)}% 完成</span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
+          <div className="progress-bar">
             <div 
-              className="bg-primary h-2 rounded-full transition-all duration-500"
+              className="progress-fill"
               style={{ width: `${((currentPracticeIndex + 1) / filteredPractices.length) * 100}%` }}
             ></div>
           </div>
         </div>
 
-        {/* 题目卡片 */}
-        <div className="card mb-6">
-          <h2 className="text-lg font-medium mb-4">题目 {currentPracticeIndex + 1}</h2>
-          <div className="mb-6">
-            {/* 题目内容 */}
-            <div className="text-lg mb-6">
+        <div className="card practice-card mb-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 rounded-[18px] bg-gradient-to-r from-[#F8A5D1] to-[#FF85A2] flex items-center justify-center">
+              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <h2 className="text-xl font-semibold text-[#6B5063]">题目 {currentPracticeIndex + 1}</h2>
+          </div>
+          
+          <div className="mb-8">
+            <div className="sentence-blank mb-8">
               {questionParts.map((part, index) => (
                 <React.Fragment key={index}>
-                  <span>{part}</span>
+                  <span className="text-[#6B5063]">{part}</span>
                   {index < questionParts.length - 1 && (
                     <div className="inline-block mx-1">
                       <input
                         type="text"
-                        className={`input-field mx-1 ${showFeedback ? (isCorrect[index] ? 'border-green-500 bg-green-50' : 'border-red-500 bg-red-50') : ''}`}
+                        className={`text-lg px-4 py-2 rounded-[18px] transition-all duration-300 ${
+                          showFeedback 
+                            ? (isCorrect[index] 
+                                ? 'input-correct pulse-success' 
+                                : 'input-error')
+                            : 'input-field'
+                        }`}
                         value={userAnswers[index] || ''}
                         onChange={(e) => handleAnswerChange(index, e.target.value)}
                         disabled={showFeedback}
-                        placeholder="请输入答案"
+                        placeholder="______"
                         style={{ minWidth: '120px' }}
                       />
                       {showFeedback && (
-                        <span className={`ml-2 ${isCorrect[index] ? 'text-green-500' : 'text-red-500'}`}>
+                        <span className={`ml-2 inline-flex items-center justify-center w-8 h-8 rounded-full ${
+                          isCorrect[index] 
+                            ? 'bg-[#B4E4D8] text-[#3A6960]' 
+                            : 'bg-[#FFA8A8] text-white'
+                        }`}>
                           {isCorrect[index] ? '✓' : '✗'}
                         </span>
                       )}
@@ -295,49 +302,79 @@ const UnitDetailPage: React.FC<UnitDetailPageProps> = ({
               ))}
             </div>
 
-            {/* 中文翻译 */}
             {currentPractice.translation && (
-              <div className="mt-4 p-4 bg-neutral-light rounded-md border border-gray-200 mb-6">
-                <p className="text-sm font-medium mb-2">中文翻译：</p>
-                <p>{currentPractice.translation}</p>
+              <div className="mt-6 p-6 bg-[#FFF5F8] rounded-[24px] border-2 border-[#F8A5D1]/20 mb-8">
+                <div className="flex items-center gap-2 mb-3">
+                  <svg className="w-5 h-5 text-[#F8A5D1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                  </svg>
+                  <p className="font-medium text-[#6B5063]">中文翻译：</p>
+                </div>
+                <p className="text-[#8A6F81]">{currentPractice.translation}</p>
               </div>
             )}
 
-            {/* 答案解析 */}
             {showFeedback && (
-              <div className="mt-6 p-4 bg-gray-50 rounded-md border border-gray-200">
-                <h3 className="font-medium mb-2">答案解析</h3>
-                <p className="text-sm text-gray-700">{currentPractice.explanation}</p>
-                <div className="mt-3">
-                  <span className="text-sm font-medium">正确答案：</span>
-                  <span className="text-sm ml-2">{currentPractice.blanks.map(blank => blank.correctAnswer).join(', ')}</span>
+              <div className={`mt-8 p-6 rounded-[24px] border-2 ${
+                isCorrect.every(c => c) 
+                  ? 'bg-[#D5F4EE] border-[#B4E4D8]' 
+                  : 'bg-[#FFD6D6]/50 border-[#FFA8A8]/50'
+              } scale-in`}>
+                <div className="flex items-center gap-2 mb-3">
+                  {isCorrect.every(c => c) ? (
+                    <svg className="w-6 h-6 text-[#3A6960]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  ) : (
+                    <svg className="w-6 h-6 text-[#8A4A4A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  )}
+                  <h3 className="font-semibold text-lg text-[#6B5063]">答案解析</h3>
+                </div>
+                <p className="text-[#8A6F81] mb-4">{currentPractice.explanation}</p>
+                <div className="flex items-center gap-2">
+                  <span className="font-medium text-[#6B5063]">正确答案：</span>
+                  <span className="bg-[#FFF5F8] px-4 py-2 rounded-[18px] text-[#6B5063] font-medium">
+                    {currentPractice.blanks.map(blank => blank.correctAnswer).join(', ')}
+                  </span>
                 </div>
               </div>
             )}
           </div>
 
-          {/* 操作按钮 */}
-          <div className="flex justify-between">
+          <div className="flex justify-between items-center gap-4">
             <button
               onClick={handlePrevious}
               disabled={currentPracticeIndex === 0}
-              className="btn-secondary disabled:opacity-50 disabled:cursor-not-allowed"
+              className="btn-secondary disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2 btn-press"
             >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
               上一题
             </button>
             {!showFeedback ? (
               <button
                 onClick={handleSubmit}
-                className="btn-primary"
+                className="btn-primary flex items-center gap-2 btn-press"
               >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
                 提交答案
               </button>
             ) : (
               <button
                 onClick={handleNext}
-                className="btn-primary"
+                className="btn-primary flex items-center gap-2 btn-press"
               >
-                {currentPracticeIndex === unit.practices.length - 1 ? '完成练习' : '下一题'}
+                {currentPracticeIndex === filteredPractices.length - 1 ? '完成练习' : '下一题'}
+                {currentPracticeIndex !== filteredPractices.length - 1 && (
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                )}
               </button>
             )}
           </div>

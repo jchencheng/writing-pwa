@@ -14,33 +14,63 @@ const STORAGE_KEYS = {
   USER_ANSWERS: 'writingPractice_userAnswers',
   ERROR_BOOK: 'writingPractice_errorBook',
   LAST_PRACTICED_UNIT: 'writingPractice_lastPracticedUnitId',
-  PRACTICE_POSITIONS: 'writingPractice_positions'
+  PRACTICE_POSITIONS: 'writingPractice_positions',
+  DARK_MODE: 'writingPractice_darkMode'
+};
+
+// IndexedDB 数据库名称和版本
+const DB_NAME = 'WritingPracticeDB';
+const DB_VERSION = 1;
+
+// 打开 IndexedDB 数据库
+const openDB = (): Promise<IDBDatabase> => {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(DB_NAME, DB_VERSION);
+    
+    request.onerror = () => {
+      console.error('Error opening IndexedDB:', request.error);
+      reject(request.error);
+    };
+    
+    request.onsuccess = () => {
+      console.log('IndexedDB opened successfully');
+      resolve(request.result);
+    };
+    
+    request.onupgradeneeded = (event) => {
+      const db = (event.target as IDBOpenDBRequest).result;
+      
+      // 创建存储对象
+      if (!db.objectStoreNames.contains('userData')) {
+        db.createObjectStore('userData', { keyPath: 'key' });
+        console.log('Created userData object store');
+      }
+    };
+  });
 };
 
 // 存储工具函数
 const storage = {
   // 保存数据
-  set: (key: string, value: any): boolean => {
+  set: async (key: string, value: any): Promise<boolean> => {
     try {
-      const serializedValue = JSON.stringify(value);
+      const db = await openDB();
+      const transaction = db.transaction('userData', 'readwrite');
+      const store = transaction.objectStore('userData');
       
-      // 尝试保存到localStorage
-      try {
-        localStorage.setItem(key, serializedValue);
-        console.log(`Saved to localStorage: ${key}`);
-      } catch (localError) {
-        console.error('Error saving to localStorage:', localError);
-      }
+      const request = store.put({ key, value });
       
-      // 尝试保存到sessionStorage
-      try {
-        sessionStorage.setItem(key, serializedValue);
-        console.log(`Saved to sessionStorage: ${key}`);
-      } catch (sessionError) {
-        console.error('Error saving to sessionStorage:', sessionError);
-      }
-      
-      return true;
+      return new Promise((resolve) => {
+        request.onsuccess = () => {
+          console.log(`Saved to IndexedDB: ${key}`);
+          resolve(true);
+        };
+        
+        request.onerror = () => {
+          console.error('Error saving to IndexedDB:', request.error);
+          resolve(false);
+        };
+      });
     } catch (error) {
       console.error('Error saving to storage:', error);
       return false;
@@ -48,48 +78,31 @@ const storage = {
   },
   
   // 获取数据
-  get: (key: string) => {
+  get: async (key: string) => {
     try {
-      console.log(`Attempting to load ${key} from storage`);
+      console.log(`Attempting to load ${key} from IndexedDB`);
+      const db = await openDB();
+      const transaction = db.transaction('userData', 'readonly');
+      const store = transaction.objectStore('userData');
       
-      // 先从localStorage获取
-      try {
-        console.log('Checking localStorage for', key);
-        const localStorageValue = localStorage.getItem(key);
-        console.log('localStorage value:', localStorageValue);
-        if (localStorageValue) {
-          try {
-            const parsedValue = JSON.parse(localStorageValue);
-            console.log(`Loaded from localStorage: ${key}`, parsedValue);
-            return parsedValue;
-          } catch (parseError) {
-            console.error('Error parsing localStorage value:', parseError);
+      const request = store.get(key);
+      
+      return new Promise((resolve) => {
+        request.onsuccess = () => {
+          if (request.result) {
+            console.log(`Loaded from IndexedDB: ${key}`, request.result.value);
+            resolve(request.result.value);
+          } else {
+            console.log(`No data found for ${key} in IndexedDB`);
+            resolve(null);
           }
-        }
-      } catch (localError) {
-        console.error('Error reading from localStorage:', localError);
-      }
-      
-      // 再从sessionStorage获取
-      try {
-        console.log('Checking sessionStorage for', key);
-        const sessionStorageValue = sessionStorage.getItem(key);
-        console.log('sessionStorage value:', sessionStorageValue);
-        if (sessionStorageValue) {
-          try {
-            const parsedValue = JSON.parse(sessionStorageValue);
-            console.log(`Loaded from sessionStorage: ${key}`, parsedValue);
-            return parsedValue;
-          } catch (parseError) {
-            console.error('Error parsing sessionStorage value:', parseError);
-          }
-        }
-      } catch (sessionError) {
-        console.error('Error reading from sessionStorage:', sessionError);
-      }
-      
-      console.log(`No data found for ${key}`);
-      return null;
+        };
+        
+        request.onerror = () => {
+          console.error('Error reading from IndexedDB:', request.error);
+          resolve(null);
+        };
+      });
     } catch (error) {
       console.error('Error reading from storage:', error);
       return null;
@@ -109,65 +122,74 @@ const App: React.FC = () => {
   const [lastPracticedUnitId, setLastPracticedUnitId] = useState<string | null>(null);
   const [practicePositions, setPracticePositions] = useState<{ [unitId: string]: number }>({});
   const [practiceMode, setPracticeMode] = useState<'retest' | 'retryErrors'>('retest');
+  const [darkMode, setDarkMode] = useState<boolean>(false);
 
   // 从存储加载数据
   useEffect(() => {
-    const loadData = () => {
+    const loadData = async () => {
       console.log('=== Loading data from storage ===');
       
-      // 直接检查localStorage和sessionStorage
-      console.log('\n=== Direct storage check ===');
-      console.log('localStorage keys:', Object.keys(localStorage));
-      console.log('sessionStorage keys:', Object.keys(sessionStorage));
-      
-      // 检查特定键
-      for (const [key, value] of Object.entries(STORAGE_KEYS)) {
-        console.log(`\n${key} (${value}):`);
-        console.log('localStorage:', localStorage.getItem(value));
-        console.log('sessionStorage:', sessionStorage.getItem(value));
+      try {
+        // 加载所有数据
+        const [
+          savedProgress,
+          savedErrorBook,
+          savedUserAnswers,
+          savedLastPracticedUnitId,
+          savedPositions,
+          savedDarkMode
+        ] = await Promise.all([
+          storage.get(STORAGE_KEYS.PROGRESS),
+          storage.get(STORAGE_KEYS.ERROR_BOOK),
+          storage.get(STORAGE_KEYS.USER_ANSWERS),
+          storage.get(STORAGE_KEYS.LAST_PRACTICED_UNIT),
+          storage.get(STORAGE_KEYS.PRACTICE_POSITIONS),
+          storage.get(STORAGE_KEYS.DARK_MODE)
+        ]);
+        
+        console.log('\n=== Loaded data ===');
+        console.log('Loaded progress:', savedProgress);
+        console.log('Loaded error book:', savedErrorBook);
+        console.log('Loaded user answers:', savedUserAnswers);
+        console.log('Loaded last practiced unit:', savedLastPracticedUnitId);
+        console.log('Loaded positions:', savedPositions);
+        console.log('Loaded dark mode:', savedDarkMode);
+        
+        // 设置状态
+        if (savedProgress && typeof savedProgress === 'object') {
+          console.log('Setting practice progress:', savedProgress);
+          setPracticeProgress(savedProgress as { [unitId: string]: number });
+        }
+        
+        if (savedErrorBook && Array.isArray(savedErrorBook)) {
+          console.log('Setting error book:', savedErrorBook);
+          setErrorBook(savedErrorBook as UserAnswer[]);
+        }
+        
+        if (savedUserAnswers && Array.isArray(savedUserAnswers)) {
+          console.log('Setting user answers:', savedUserAnswers);
+          setUserAnswers(savedUserAnswers as UserAnswer[]);
+        }
+        
+        if (savedLastPracticedUnitId && typeof savedLastPracticedUnitId === 'string') {
+          console.log('Setting last practiced unit:', savedLastPracticedUnitId);
+          setLastPracticedUnitId(savedLastPracticedUnitId);
+        }
+        
+        if (savedPositions && typeof savedPositions === 'object') {
+          console.log('Setting practice positions:', savedPositions);
+          setPracticePositions(savedPositions as { [unitId: string]: number });
+        }
+        
+        if (savedDarkMode !== null && typeof savedDarkMode === 'boolean') {
+          console.log('Setting dark mode:', savedDarkMode);
+          setDarkMode(savedDarkMode);
+        }
+        
+        console.log('=== Data loaded successfully ===');
+      } catch (error) {
+        console.error('Error loading data:', error);
       }
-      
-      // 加载所有数据
-      const savedProgress = storage.get(STORAGE_KEYS.PROGRESS);
-      const savedErrorBook = storage.get(STORAGE_KEYS.ERROR_BOOK);
-      const savedUserAnswers = storage.get(STORAGE_KEYS.USER_ANSWERS);
-      const savedLastPracticedUnitId = storage.get(STORAGE_KEYS.LAST_PRACTICED_UNIT);
-      const savedPositions = storage.get(STORAGE_KEYS.PRACTICE_POSITIONS);
-      
-      console.log('\n=== Loaded data ===');
-      console.log('Loaded progress:', savedProgress);
-      console.log('Loaded error book:', savedErrorBook);
-      console.log('Loaded user answers:', savedUserAnswers);
-      console.log('Loaded last practiced unit:', savedLastPracticedUnitId);
-      console.log('Loaded positions:', savedPositions);
-      
-      // 设置状态
-      if (savedProgress) {
-        console.log('Setting practice progress:', savedProgress);
-        setPracticeProgress(savedProgress);
-      }
-      
-      if (savedErrorBook) {
-        console.log('Setting error book:', savedErrorBook);
-        setErrorBook(savedErrorBook);
-      }
-      
-      if (savedUserAnswers) {
-        console.log('Setting user answers:', savedUserAnswers);
-        setUserAnswers(savedUserAnswers);
-      }
-      
-      if (savedLastPracticedUnitId) {
-        console.log('Setting last practiced unit:', savedLastPracticedUnitId);
-        setLastPracticedUnitId(savedLastPracticedUnitId);
-      }
-      
-      if (savedPositions) {
-        console.log('Setting practice positions:', savedPositions);
-        setPracticePositions(savedPositions);
-      }
-      
-      console.log('=== Data loaded successfully ===');
     };
     
     // 延迟加载，确保组件已经渲染
@@ -175,7 +197,7 @@ const App: React.FC = () => {
   }, []);
 
   // 保存数据到存储
-  const saveData = useCallback(() => {
+  const saveData = useCallback(async () => {
     console.log('=== Saving data to storage ===');
     
     const data = {
@@ -183,28 +205,44 @@ const App: React.FC = () => {
       errorBook,
       userAnswers,
       lastPracticedUnitId,
-      positions: practicePositions
+      positions: practicePositions,
+      darkMode
     };
     
     console.log('Data to save:', data);
     
-    // 保存所有数据
-    const progressSaved = storage.set(STORAGE_KEYS.PROGRESS, practiceProgress);
-    const errorBookSaved = storage.set(STORAGE_KEYS.ERROR_BOOK, errorBook);
-    const userAnswersSaved = storage.set(STORAGE_KEYS.USER_ANSWERS, userAnswers);
-    const lastPracticedUnitSaved = storage.set(STORAGE_KEYS.LAST_PRACTICED_UNIT, lastPracticedUnitId);
-    const positionsSaved = storage.set(STORAGE_KEYS.PRACTICE_POSITIONS, practicePositions);
-    
-    console.log('Save results:', {
-      progressSaved,
-      errorBookSaved,
-      userAnswersSaved,
-      lastPracticedUnitSaved,
-      positionsSaved
-    });
-    
-    console.log('=== Data saved successfully ===');
-  }, [practiceProgress, errorBook, userAnswers, lastPracticedUnitId, practicePositions]);
+    try {
+      // 保存所有数据
+      const [
+        progressSaved,
+        errorBookSaved,
+        userAnswersSaved,
+        lastPracticedUnitSaved,
+        positionsSaved,
+        darkModeSaved
+      ] = await Promise.all([
+        storage.set(STORAGE_KEYS.PROGRESS, practiceProgress),
+        storage.set(STORAGE_KEYS.ERROR_BOOK, errorBook),
+        storage.set(STORAGE_KEYS.USER_ANSWERS, userAnswers),
+        storage.set(STORAGE_KEYS.LAST_PRACTICED_UNIT, lastPracticedUnitId),
+        storage.set(STORAGE_KEYS.PRACTICE_POSITIONS, practicePositions),
+        storage.set(STORAGE_KEYS.DARK_MODE, darkMode)
+      ]);
+      
+      console.log('Save results:', {
+        progressSaved,
+        errorBookSaved,
+        userAnswersSaved,
+        lastPracticedUnitSaved,
+        positionsSaved,
+        darkModeSaved
+      });
+      
+      console.log('=== Data saved successfully ===');
+    } catch (error) {
+      console.error('Error saving data:', error);
+    }
+  }, [practiceProgress, errorBook, userAnswers, lastPracticedUnitId, practicePositions, darkMode]);
 
   // 当状态变化时保存数据
   useEffect(() => {
@@ -350,6 +388,11 @@ const App: React.FC = () => {
     setCurrentPage('unit');
   }, []);
 
+  // 切换深色模式
+  const toggleDarkMode = useCallback(() => {
+    setDarkMode(prev => !prev);
+  }, []);
+
   // 导航到学习页面
   const handleStudyUnit = useCallback((unit: PracticeUnit) => {
     setSelectedUnit(unit);
@@ -370,6 +413,8 @@ const App: React.FC = () => {
             onViewSettings={handleViewSettings}
             lastPracticedUnitId={lastPracticedUnitId}
             onStudyUnit={handleStudyUnit}
+            darkMode={darkMode}
+            onToggleDarkMode={toggleDarkMode}
           />
         );
       case 'study':
@@ -378,6 +423,8 @@ const App: React.FC = () => {
             unit={selectedUnit!}
             onStartPractice={handleStartPractice}
             onBack={handleBackToHome}
+            darkMode={darkMode}
+            onToggleDarkMode={toggleDarkMode}
           />
         );
       case 'unit':
@@ -393,6 +440,8 @@ const App: React.FC = () => {
             practiceMode={practiceMode}
             errorBook={errorBook}
             initialPosition={practicePositions[selectedUnit!.id] || 0}
+            darkMode={darkMode}
+            onToggleDarkMode={toggleDarkMode}
           />
         );
       case 'report':
@@ -409,6 +458,8 @@ const App: React.FC = () => {
               setPracticeMode('retryErrors');
               setCurrentPage('unit');
             }}
+            darkMode={darkMode}
+            onToggleDarkMode={toggleDarkMode}
           />
         );
       case 'errorBook':
@@ -422,6 +473,8 @@ const App: React.FC = () => {
                 `${error.unitId}-${error.practiceId}-${error.blankIndex}` !== errorId
               ));
             }}
+            darkMode={darkMode}
+            onToggleDarkMode={toggleDarkMode}
           />
         );
       case 'settings':
@@ -432,6 +485,8 @@ const App: React.FC = () => {
             practiceProgress={practiceProgress}
             onBack={handleBackToHome}
             onImportData={handleImportData}
+            darkMode={darkMode}
+            onToggleDarkMode={toggleDarkMode}
           />
         );
       default:
@@ -444,6 +499,8 @@ const App: React.FC = () => {
             onViewSettings={handleViewSettings}
             lastPracticedUnitId={lastPracticedUnitId}
             onStudyUnit={handleStudyUnit}
+            darkMode={darkMode}
+            onToggleDarkMode={toggleDarkMode}
           />
         );
     }
