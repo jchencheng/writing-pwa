@@ -135,7 +135,7 @@ const PracticeReportPage: React.FC<PracticeReportPageProps> = ({ report, unit, o
                       </div>
                     </div>
                     <div className="p-4 bg-white rounded-[18px]">
-                      <p className="text-sm font-medium" style={{ color: 'var(--text-primary)' }} className="mb-2">解析：</p>
+                      <p className="text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>解析：</p>
                       <p className="text-[#64748B]">{error.explanation}</p>
                     </div>
                   </div>
