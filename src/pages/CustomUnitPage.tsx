@@ -268,15 +268,7 @@ const CustomUnitPage: React.FC<CustomUnitPageProps> = ({
   };
 
   // 提取填空内容
-  const extractBlanks = (text: string): Blank[] => {
-    // 支持多种挖空格式：[ ], (), _, __, ___ 等
-    const blankMatches = text.match(/(\[ \]|\(\)|_+)/g) || [];
-    return blankMatches.map((_, index) => ({
-      id: `b${index + 1}`,
-      correctAnswer: '',
-      options: []
-    }));
-  };
+
 
   // 添加当前练习
   const addPractice = () => {
@@ -351,7 +343,7 @@ const CustomUnitPage: React.FC<CustomUnitPageProps> = ({
             </svg>
             返回
           </button>
-          <h1 className="text-lg font-bold bg-gradient-to-r from-[#F8A5D1] to-[#FF85A2] bg-clip-text text-transparent">
+          <h1 className="text-lg font-bold text-primary-gradient">
             添加自定义练习
           </h1>
           <button
@@ -374,8 +366,8 @@ const CustomUnitPage: React.FC<CustomUnitPageProps> = ({
 
       <main className="container mx-auto px-4 py-8 page-transition">
         <div className={`card practice-card mb-8 ${darkMode ? 'bg-gray-800' : ''}`}>
-          <h2 className={`text-xl font-semibold mb-6 flex items-center gap-2 ${darkMode ? 'text-white' : 'text-[#6B5063]'}`}>
-            <svg className="w-6 h-6 text-[#F8A5D1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <h2 className={`text-xl font-semibold mb-6 flex items-center gap-2 ${darkMode ? 'text-white' : 'text-[#334155]'}`}>
+            <svg className="w-6 h-6 text-[#4A6FA5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
             </svg>
             单元信息
@@ -383,12 +375,12 @@ const CustomUnitPage: React.FC<CustomUnitPageProps> = ({
 
           <div className="space-y-4">
             <div>
-              <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-white' : 'text-[#6B5063]'}`}>
+              <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
                 单元标题
               </label>
               <input
                 type="text"
-                className={`w-full px-4 py-3 rounded-[18px] border-2 border-[#F8A5D1]/20 focus:outline-none focus:ring-2 focus:ring-[#F8A5D1] transition-all ${darkMode ? 'text-white bg-gray-800' : ''}`}
+                className={`w-full px-4 py-3 rounded-[18px] border-2 border-[#4A6FA5]/20 focus:outline-none focus:ring-2 focus:ring-[#4A6FA5] transition-all ${darkMode ? 'text-white bg-gray-800' : ''}`}
                 value={unitTitle}
                 onChange={(e) => setUnitTitle(e.target.value)}
                 placeholder="输入单元标题"
@@ -396,11 +388,11 @@ const CustomUnitPage: React.FC<CustomUnitPageProps> = ({
             </div>
 
             <div>
-              <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-white' : 'text-[#6B5063]'}`}>
+              <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
                 单元描述
               </label>
               <textarea
-                className={`w-full px-4 py-3 rounded-[18px] border-2 border-[#F8A5D1]/20 focus:outline-none focus:ring-2 focus:ring-[#F8A5D1] transition-all ${darkMode ? 'text-white bg-gray-800' : ''}`}
+                className={`w-full px-4 py-3 rounded-[18px] border-2 border-[#4A6FA5]/20 focus:outline-none focus:ring-2 focus:ring-[#4A6FA5] transition-all ${darkMode ? 'text-white bg-gray-800' : ''}`}
                 value={unitDescription}
                 onChange={(e) => setUnitDescription(e.target.value)}
                 placeholder="输入单元描述"
@@ -411,8 +403,8 @@ const CustomUnitPage: React.FC<CustomUnitPageProps> = ({
         </div>
 
         <div className={`card practice-card mb-8 ${darkMode ? 'bg-gray-800' : ''}`}>
-          <h2 className={`text-xl font-semibold mb-6 flex items-center gap-2 ${darkMode ? 'text-white' : 'text-[#6B5063]'}`}>
-            <svg className="w-6 h-6 text-[#F8A5D1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <h2 className={`text-xl font-semibold mb-6 flex items-center gap-2 ${darkMode ? 'text-white' : 'text-[#334155]'}`}>
+            <svg className="w-6 h-6 text-[#4A6FA5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
             添加练习题目
@@ -420,11 +412,11 @@ const CustomUnitPage: React.FC<CustomUnitPageProps> = ({
 
           <div className="mb-6">
             <div>
-              <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-white' : 'text-[#6B5063]'}`}>
+              <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
                 输入原始文本，点击词语作为填空
               </label>
               <textarea
-                className={`w-full px-4 py-3 rounded-[18px] border-2 border-[#F8A5D1]/20 focus:outline-none focus:ring-2 focus:ring-[#F8A5D1] transition-all mb-4 ${darkMode ? 'text-white bg-gray-800' : ''}`}
+                className={`w-full px-4 py-3 rounded-[18px] border-2 border-[#4A6FA5]/20 focus:outline-none focus:ring-2 focus:ring-[#4A6FA5] transition-all mb-4 ${darkMode ? 'text-white bg-gray-800' : ''}`}
                 value={originalText}
                 onChange={handleOriginalTextChange}
                 placeholder="输入一段英文文本..."
@@ -433,8 +425,8 @@ const CustomUnitPage: React.FC<CustomUnitPageProps> = ({
             </div>
 
             {clickableWords.length > 0 && (
-              <div className={`p-4 rounded-[18px] border-2 border-[#F8A5D1]/20 mb-4 ${darkMode ? 'bg-gray-800' : 'bg-[#FFF5F8]'}`}>
-                <p className={`text-sm font-medium mb-2 ${darkMode ? 'text-white' : 'text-[#6B5063]'}`}>
+              <div className={`p-4 rounded-[18px] border-2 border-[#4A6FA5]/20 mb-4 ${darkMode ? 'bg-gray-800' : 'bg-[#E6F0FA]'}`}>
+                <p className={`text-sm font-medium mb-2 ${darkMode ? 'text-white' : 'text-[#334155]'}`}>
                   点击词语标记为填空：
                 </p>
                 <div className="flex flex-wrap gap-2">
@@ -446,11 +438,11 @@ const CustomUnitPage: React.FC<CustomUnitPageProps> = ({
                         onClick={() => valid && handleWordClick(index)}
                         className={`px-3 py-1 rounded-full text-sm transition-all ${
                           word.isBlank
-                            ? 'bg-[#F8A5D1] text-white'
+                            ? 'bg-[#4A6FA5] text-white'
                             : valid
                               ? darkMode
-                                ? 'bg-gray-700 border border-[#F8A5D1]/20 text-white cursor-pointer hover:opacity-80'
-                                : 'bg-white border border-[#F8A5D1]/20 text-[#6B5063] cursor-pointer hover:opacity-80'
+                                ? 'bg-gray-700 border border-[#4A6FA5]/20 text-white cursor-pointer hover:opacity-80'
+                                : 'bg-white border border-[#4A6FA5]/20 text-[#334155] cursor-pointer hover:opacity-80'
                               : darkMode
                                 ? 'text-gray-500'
                                 : 'text-gray-400'
@@ -466,11 +458,11 @@ const CustomUnitPage: React.FC<CustomUnitPageProps> = ({
             )}
 
             <div className="mt-4">
-              <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-white' : 'text-[#6B5063]'}`}>
+              <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
                 挖空后的文本（使用 [ ] 标记填空）
               </label>
               <textarea
-                className={`w-full px-4 py-3 rounded-[18px] border-2 border-[#F8A5D1]/20 focus:outline-none focus:ring-2 focus:ring-[#F8A5D1] transition-all ${darkMode ? 'text-white bg-gray-800' : ''}`}
+                className={`w-full px-4 py-3 rounded-[18px] border-2 border-[#4A6FA5]/20 focus:outline-none focus:ring-2 focus:ring-[#4A6FA5] transition-all ${darkMode ? 'text-white bg-gray-800' : ''}`}
                 value={blankedText}
                 onChange={handleBlankedTextChange}
                 placeholder="输入带 [ ] 标记的文本..."
@@ -480,13 +472,13 @@ const CustomUnitPage: React.FC<CustomUnitPageProps> = ({
 
             {currentPractice.blanks.length > 0 && (
               <div className="mt-6 space-y-4">
-                <h3 className={`font-medium ${darkMode ? 'text-white' : 'text-[#6B5063]'}`}>填空答案</h3>
+                <h3 className="font-medium" style={{ color: 'var(--text-primary)' }}>填空答案</h3>
                 {currentPractice.blanks.map((blank, index) => (
                   <div key={index} className="flex items-center gap-2">
-                    <span className={`w-8 text-center font-medium ${darkMode ? 'text-white' : 'text-[#6B5063]'}`}>{index + 1}.</span>
+                    <span className="w-8 text-center font-medium" style={{ color: 'var(--text-primary)' }}>{index + 1}.</span>
                     <input
                       type="text"
-                      className={`flex-1 px-4 py-2 rounded-[18px] border-2 border-[#F8A5D1]/20 focus:outline-none focus:ring-2 focus:ring-[#F8A5D1] transition-all ${darkMode ? 'text-white bg-gray-800' : ''}`}
+                      className={`flex-1 px-4 py-2 rounded-[18px] border-2 border-[#4A6FA5]/20 focus:outline-none focus:ring-2 focus:ring-[#4A6FA5] transition-all ${darkMode ? 'text-white bg-gray-800' : ''}`}
                       value={blank.correctAnswer}
                       onChange={(e) => handleBlankAnswerChange(index, e.target.value)}
                       placeholder="输入正确答案"
@@ -498,11 +490,11 @@ const CustomUnitPage: React.FC<CustomUnitPageProps> = ({
 
             <div className="mt-4 space-y-2">
               <div>
-                <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-white' : 'text-[#6B5063]'}`}>
+                <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
                   答案解析
                 </label>
                 <textarea
-                  className={`w-full px-4 py-2 rounded-[18px] border-2 border-[#F8A5D1]/20 focus:outline-none focus:ring-2 focus:ring-[#F8A5D1] transition-all ${darkMode ? 'text-white bg-gray-800' : ''}`}
+                  className={`w-full px-4 py-2 rounded-[18px] border-2 border-[#4A6FA5]/20 focus:outline-none focus:ring-2 focus:ring-[#4A6FA5] transition-all ${darkMode ? 'text-white bg-gray-800' : ''}`}
                   value={currentPractice.explanation}
                   onChange={(e) => setCurrentPractice({ ...currentPractice, explanation: e.target.value })}
                   placeholder="输入答案解析"
@@ -511,11 +503,11 @@ const CustomUnitPage: React.FC<CustomUnitPageProps> = ({
               </div>
 
               <div>
-                <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-white' : 'text-[#6B5063]'}`}>
+                <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
                   中文翻译
                 </label>
                 <textarea
-                  className={`w-full px-4 py-2 rounded-[18px] border-2 border-[#F8A5D1]/20 focus:outline-none focus:ring-2 focus:ring-[#F8A5D1] transition-all ${darkMode ? 'text-white bg-gray-800' : ''}`}
+                  className={`w-full px-4 py-2 rounded-[18px] border-2 border-[#4A6FA5]/20 focus:outline-none focus:ring-2 focus:ring-[#4A6FA5] transition-all ${darkMode ? 'text-white bg-gray-800' : ''}`}
                   value={currentPractice.translation}
                   onChange={(e) => setCurrentPractice({ ...currentPractice, translation: e.target.value })}
                   placeholder="输入中文翻译"
@@ -539,21 +531,21 @@ const CustomUnitPage: React.FC<CustomUnitPageProps> = ({
 
         {practices.length > 0 && (
           <div className={`card practice-card mb-8 ${darkMode ? 'bg-gray-800' : ''}`}>
-            <h2 className={`text-xl font-semibold mb-6 flex items-center gap-2 ${darkMode ? 'text-white' : 'text-[#6B5063]'}`}>
-            <svg className="w-6 h-6 text-[#F8A5D1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-            </svg>
-            已添加的题目 ({practices.length})
-          </h2>
+            <h2 className={`text-xl font-semibold mb-6 flex items-center gap-2 ${darkMode ? 'text-white' : 'text-[#334155]'}`}>
+              <svg className="w-6 h-6 text-[#4A6FA5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+              已添加的题目 ({practices.length})
+            </h2>
 
             <div className="space-y-4">
               {practices.map((practice, index) => (
-                <div key={practice.id} className={`p-4 rounded-[18px] border-2 border-[#F8A5D1]/20 ${darkMode ? 'bg-gray-700' : 'bg-[#FFF5F8]'}`}>
-                  <h3 className={`font-medium mb-2 ${darkMode ? 'text-white' : 'text-[#6B5063]'}`}>题目 {index + 1}</h3>
-                  <p className={`mb-2 ${darkMode ? 'text-gray-300' : 'text-[#8A6F81]'}`}>{practice.question}</p>
+                <div key={practice.id} className={`p-4 rounded-[18px] border-2 border-[#4A6FA5]/20 ${darkMode ? 'bg-gray-700' : 'bg-[#E6F0FA]'}`}>
+                  <h3 className={`font-medium mb-2 ${darkMode ? 'text-white' : 'text-[#334155]'}`}>题目 {index + 1}</h3>
+                  <p className={`mb-2 ${darkMode ? 'text-gray-300' : 'text-[#64748B]'}`}>{practice.question}</p>
                   <div className="flex flex-wrap gap-2 mt-2">
                     {practice.blanks.map((blank, blankIndex) => (
-                      <span key={blank.id} className={`px-3 py-1 rounded-full text-sm ${darkMode ? 'bg-pink-900/30 text-white' : 'bg-[#F8A5D1]/20 text-[#6B5063]'}`}>
+                      <span key={blank.id} className={`px-3 py-1 rounded-full text-sm ${darkMode ? 'bg-blue-900/30 text-white' : 'bg-[#4A6FA5]/20 text-[#334155]'}`}>
                         {blankIndex + 1}: {blank.correctAnswer}
                       </span>
                     ))}

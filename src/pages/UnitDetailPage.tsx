@@ -227,7 +227,7 @@ const UnitDetailPage: React.FC<UnitDetailPageProps> = ({
             </svg>
             返回
           </button>
-          <h1 className="text-lg font-bold bg-gradient-to-r from-[#F8A5D1] to-[#FF85A2] bg-clip-text text-transparent">
+          <h1 className="text-lg font-bold text-primary-gradient">
             {unit.title}
           </h1>
           <button
@@ -252,10 +252,10 @@ const UnitDetailPage: React.FC<UnitDetailPageProps> = ({
         <div className="mb-8">
           <div className="flex justify-between mb-3 items-center">
             <div className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-[#F8A5D1] to-[#FF85A2] flex items-center justify-center">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-[#4A6FA5] to-[#6B8FC7] flex items-center justify-center">
                 <span className="text-white font-bold text-sm">{currentPracticeIndex + 1}</span>
               </div>
-              <span className="text-[#6B5063] font-medium">/ {filteredPractices.length}</span>
+              <span className="font-medium" style={{ color: 'var(--text-primary)' }}>/ {filteredPractices.length}</span>
             </div>
             <span className="tag-primary">{Math.round(((currentPracticeIndex + 1) / filteredPractices.length) * 100)}% 完成</span>
           </div>
@@ -269,19 +269,19 @@ const UnitDetailPage: React.FC<UnitDetailPageProps> = ({
 
         <div className="card practice-card mb-8">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-[18px] bg-gradient-to-r from-[#F8A5D1] to-[#FF85A2] flex items-center justify-center">
+            <div className="w-10 h-10 rounded-[18px] bg-gradient-to-r from-[#4A6FA5] to-[#6B8FC7] flex items-center justify-center">
               <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
             </div>
-            <h2 className="text-xl font-semibold text-[#6B5063]">题目 {currentPracticeIndex + 1}</h2>
+            <h2 className="text-xl font-semibold" style={{ color: 'var(--text-primary)' }}>题目 {currentPracticeIndex + 1}</h2>
           </div>
           
           <div className="mb-8">
             <div className="sentence-blank mb-8">
               {questionParts.map((part, index) => (
                 <React.Fragment key={index}>
-                  <span className="text-[#6B5063]">{part}</span>
+                  <span style={{ color: 'var(--text-primary)' }}>{part}</span>
                   {index < questionParts.length - 1 && (
                     <div className="inline-block mx-1">
                       <input
@@ -302,7 +302,7 @@ const UnitDetailPage: React.FC<UnitDetailPageProps> = ({
                       {showFeedback && (
                         <span className={`ml-2 inline-flex items-center justify-center w-8 h-8 rounded-full ${
                           isCorrect[index] 
-                            ? 'bg-[#B4E4D8] text-[#3A6960]' 
+                            ? 'bg-[#6B8FC7] text-white' 
                             : 'bg-[#FFA8A8] text-white'
                         }`}>
                           {isCorrect[index] ? '✓' : '✗'}
@@ -314,58 +314,59 @@ const UnitDetailPage: React.FC<UnitDetailPageProps> = ({
               ))}
             </div>
 
-            {currentPractice.translation && (
-              <div className={`mt-6 p-6 rounded-[24px] border-2 mb-8 ${
-                darkMode 
-                  ? 'bg-pink-900/20 border-[#F8A5D1]/30' 
-                  : 'bg-[#FFF5F8] border-[#F8A5D1]/20'
-              }`}>
-                <div className="flex items-center gap-2 mb-3">
-                  <svg className={`w-5 h-5 ${darkMode ? 'text-[#FF85A2]' : 'text-[#F8A5D1]'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
-                  </svg>
-                  <p className={`font-medium ${darkMode ? 'text-white' : 'text-[#6B5063]'}`}>中文翻译：</p>
-                </div>
-                <p className={`${darkMode ? 'text-white' : 'text-[#8A6F81]'}`}>{currentPractice.translation}</p>
+          {currentPractice.translation && (
+            <div className={`mt-6 p-6 rounded-[24px] border-2 mb-8 ${
+              darkMode 
+                ? 'bg-blue-900/20 border-[#6B8FC7]/30' 
+                : 'bg-[#E6F0FA] border-[#6B8FC7]/20'
+            }`}>
+              <div className="flex items-center gap-2 mb-3">
+                <svg className={`w-5 h-5 ${darkMode ? 'text-[#6B8FC7]' : 'text-[#4A6FA5]'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                </svg>
+                <p className={`font-medium ${darkMode ? 'text-white' : 'text-[#334155]'}`}>中文翻译：</p>
               </div>
-            )}
+              <p className={`${darkMode ? 'text-white' : 'text-[#64748B]'}`}>{currentPractice.translation}</p>
+            </div>
+          )}
 
-            {showFeedback && (
-              <div className={`mt-8 p-6 rounded-[24px] border-2 scale-in ${
-                isCorrect.every(c => c) 
-                  ? (darkMode 
-                      ? 'bg-green-900/20 border-[#B4E4D8]/50' 
-                      : 'bg-[#D5F4EE] border-[#B4E4D8]')
-                  : (darkMode 
-                      ? 'bg-red-900/20 border-[#FFA8A8]/50' 
-                      : 'bg-[#FFD6D6]/50 border-[#FFA8A8]/50')
-              }`}>
-                <div className="flex items-center gap-2 mb-3">
-                  {isCorrect.every(c => c) ? (
-                    <svg className={`w-6 h-6 ${darkMode ? 'text-[#B4E4D8]' : 'text-[#3A6960]'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  ) : (
-                    <svg className={`w-6 h-6 ${darkMode ? 'text-[#FFA8A8]' : 'text-[#8A4A4A]'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  )}
-                  <h3 className={`font-semibold text-lg ${darkMode ? 'text-white' : 'text-[#6B5063]'}`}>答案解析</h3>
-                </div>
-                <p className={`mb-4 ${darkMode ? 'text-white' : 'text-[#8A6F81]'}`}>{currentPractice.explanation}</p>
-                <div className="flex items-center gap-2">
-                  <span className={`font-medium ${darkMode ? 'text-white' : 'text-[#6B5063]'}`}>正确答案：</span>
-                  <span className={`px-4 py-2 rounded-[18px] font-medium ${
-                    darkMode 
-                      ? 'bg-pink-900/30 text-white' 
-                      : 'bg-[#FFF5F8] text-[#6B5063]'
-                  }`}>
-                    {currentPractice.blanks.map(blank => blank.correctAnswer).join(', ')}
-                  </span>
+          {showFeedback && (
+            <div className={`mt-8 p-6 rounded-[24px] border-2 scale-in ${
+              isCorrect.every(c => c) 
+                ? (darkMode 
+                    ? 'bg-blue-900/20 border-[#6B8FC7]/50' 
+                    : 'bg-[#E6F0FA] border-[#6B8FC7]')
+                : (darkMode 
+                    ? 'bg-red-900/20 border-[#FFA8A8]/50' 
+                    : 'bg-[#FFD6D6]/50 border-[#FFA8A8]/50')
+            }`}>
+              <div className="flex items-center gap-2 mb-3">
+                {isCorrect.every(c => c) ? (
+                  <svg className={`w-6 h-6 ${darkMode ? 'text-[#6B8FC7]' : 'text-[#4A6FA5]'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                ) : (
+                  <svg className={`w-6 h-6 ${darkMode ? 'text-[#FFA8A8]' : 'text-[#8A4A4A]'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                )}
+                <div>
+                  <h3 className="font-semibold text-lg" style={{ color: 'var(--text-primary)' }}>答案解析</h3>
+                  <p className="mb-4" style={{ color: 'var(--text-secondary)' }}>{currentPractice.explanation}</p>
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium" style={{ color: 'var(--text-primary)' }}>正确答案：</span>
+                    <span className={`px-4 py-2 rounded-[18px] font-medium ${
+                      darkMode 
+                        ? 'bg-blue-900/30 text-white' 
+                        : 'bg-[#E6F0FA] text-[#334155]'
+                    }`}>
+                      {currentPractice.blanks.map(blank => blank.correctAnswer).join(', ')}
+                    </span>
+                  </div>
                 </div>
               </div>
-            )}
-          </div>
+            </div>
+          )}
 
           <div className="flex justify-between items-center gap-4">
             <button
@@ -401,6 +402,7 @@ const UnitDetailPage: React.FC<UnitDetailPageProps> = ({
                 )}
               </button>
             )}
+          </div>
           </div>
         </div>
       </main>

@@ -31,7 +31,7 @@ const PracticeReportPage: React.FC<PracticeReportPageProps> = ({ report, unit, o
             </svg>
             返回
           </button>
-          <h1 className="text-lg font-bold bg-gradient-to-r from-[#F8A5D1] to-[#FF85A2] bg-clip-text text-transparent">
+          <h1 className="text-lg font-bold text-primary-gradient">
             练习报告
           </h1>
           <button
@@ -55,39 +55,39 @@ const PracticeReportPage: React.FC<PracticeReportPageProps> = ({ report, unit, o
       <main className="container mx-auto px-4 py-8 page-transition">
         <div className="card practice-card mb-8">
           <div className="flex items-center gap-3 mb-8">
-            <div className="w-14 h-14 rounded-full bg-gradient-to-r from-[#F8A5D1] to-[#FF85A2] flex items-center justify-center">
+            <div className="w-14 h-14 rounded-full bg-gradient-to-r from-[#4A6FA5] to-[#6B8FC7] flex items-center justify-center">
               <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
               </svg>
             </div>
-            <h2 className="text-2xl font-bold text-[#6B5063]">{unit.title}</h2>
+            <h2 className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>{unit.title}</h2>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div className="p-6 rounded-[24px] bg-gradient-to-br from-[#F8A5D1]/20 to-[#FF85A2]/20 border-2 border-[#F8A5D1]/30 scale-in">
+            <div className="p-6 rounded-[24px] bg-gradient-to-br from-[#4A6FA5]/20 to-[#6B8FC7]/20 border-2 border-[#4A6FA5]/30 scale-in">
               <div className="flex items-center gap-2 mb-2">
-                <svg className="w-5 h-5 text-[#F8A5D1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 text-[#4A6FA5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
-                <p className="text-sm text-[#8A6F81]">总题目数</p>
+                <p className="text-sm text-[#64748B]">总题目数</p>
               </div>
               <p className="text-3xl font-bold stat-number">{report.totalCount}</p>
             </div>
-            <div className="p-6 rounded-[24px] bg-gradient-to-br from-[#B4E4D8]/30 to-[#9DDACD]/30 border-2 border-[#B4E4D8]/50 scale-in" style={{ animationDelay: '0.1s' }}>
+            <div className="p-6 rounded-[24px] bg-gradient-to-br from-[#6B8FC7]/30 to-[#4A6FA5]/30 border-2 border-[#6B8FC7]/50 scale-in" style={{ animationDelay: '0.1s' }}>
               <div className="flex items-center gap-2 mb-2">
-                <svg className="w-5 h-5 text-[#3A6960]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 text-[#4A6FA5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <p className="text-sm text-[#8A6F81]">正确数</p>
+                <p className="text-sm text-[#64748B]">正确数</p>
               </div>
-              <p className="text-3xl font-bold text-[#3A6960]">{report.correctCount}</p>
+              <p className="text-3xl font-bold text-[#4A6FA5]">{report.correctCount}</p>
             </div>
             <div className="p-6 rounded-[24px] bg-gradient-to-br from-[#FFA8A8]/30 to-[#FF8C8C]/30 border-2 border-[#FFA8A8]/50 scale-in" style={{ animationDelay: '0.2s' }}>
               <div className="flex items-center gap-2 mb-2">
                 <svg className="w-5 h-5 text-[#8A4A4A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <p className="text-sm text-[#8A6F81]">错误数</p>
+                <p className="text-sm text-[#64748B]">错误数</p>
               </div>
               <p className="text-3xl font-bold text-[#8A4A4A]">{report.incorrectCount}</p>
             </div>
@@ -95,7 +95,7 @@ const PracticeReportPage: React.FC<PracticeReportPageProps> = ({ report, unit, o
 
           <div className="mb-8">
             <div className="flex justify-between mb-3 items-center">
-              <span className="text-[#6B5063] font-medium">正确率</span>
+              <span className="font-medium" style={{ color: 'var(--text-primary)' }}>正确率</span>
               <span className="text-xl font-bold stat-number">{report.accuracy}%</span>
             </div>
             <div className="progress-bar">
@@ -106,37 +106,37 @@ const PracticeReportPage: React.FC<PracticeReportPageProps> = ({ report, unit, o
             </div>
           </div>
 
-          <div className="mb-8 flex items-center gap-3 p-4 bg-[#FFF5F8] rounded-[24px]">
-            <svg className="w-6 h-6 text-[#F8A5D1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="mb-8 flex items-center gap-3 p-4 bg-[#E6F0FA] rounded-[24px]">
+            <svg className="w-6 h-6 text-[#4A6FA5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <p className="text-[#6B5063]">用时：<span className="font-semibold">{formatTime(report.timeSpent)}</span></p>
+            <p style={{ color: 'var(--text-primary)' }}>用时：<span className="font-semibold">{formatTime(report.timeSpent)}</span></p>
           </div>
 
           {report.incorrectAnswers.length > 0 && (
             <div className="mb-8">
               <div className="flex items-center gap-2 mb-6">
                 <div className="decorative-dot"></div>
-                <h3 className="text-lg font-semibold text-[#6B5063]">错题汇总</h3>
+                <h3 className="text-lg font-semibold" style={{ color: 'var(--text-primary)' }}>错题汇总</h3>
                 <div className="decorative-dot"></div>
               </div>
               <div className="space-y-4">
                 {report.incorrectAnswers.map((error, index) => (
-                  <div key={index} className="p-6 bg-[#FFD6D6]/40 rounded-[24px] border-2 border-[#FFA8A8]/40 scale-in" style={{ animationDelay: `${index * 0.1}s` }}>
-                    <p className="text-[#6B5063] mb-4">{error.question}</p>
+                  <div key={index} className="p-6 bg-[#E2E8F0]/40 rounded-[24px] border-2 border-[#94A3B8]/40 scale-in" style={{ animationDelay: `${index * 0.1}s` }}>
+                    <p style={{ color: 'var(--text-primary)' }} className="mb-4">{error.question}</p>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                       <div className="p-4 bg-white rounded-[18px]">
-                        <span className="text-sm text-[#8A6F81]">你的答案：</span>
-                        <span className="text-[#8A4A4A] ml-2 font-medium">{error.userAnswer || '(未填写)'}</span>
+                        <span className="text-sm text-[#64748B]">你的答案：</span>
+                        <span className="text-[#64748B] ml-2 font-medium">{error.userAnswer || '(未填写)'}</span>
                       </div>
                       <div className="p-4 bg-white rounded-[18px]">
-                        <span className="text-sm text-[#8A6F81]">正确答案：</span>
-                        <span className="text-[#3A6960] ml-2 font-medium">{error.correctAnswer}</span>
+                        <span className="text-sm text-[#64748B]">正确答案：</span>
+                        <span className="text-[#4A6FA5] ml-2 font-medium">{error.correctAnswer}</span>
                       </div>
                     </div>
                     <div className="p-4 bg-white rounded-[18px]">
-                      <p className="text-sm font-medium text-[#6B5063] mb-2">解析：</p>
-                      <p className="text-[#8A6F81]">{error.explanation}</p>
+                      <p className="text-sm font-medium" style={{ color: 'var(--text-primary)' }} className="mb-2">解析：</p>
+                      <p className="text-[#64748B]">{error.explanation}</p>
                     </div>
                   </div>
                 ))}

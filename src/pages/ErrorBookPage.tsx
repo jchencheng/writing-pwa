@@ -42,7 +42,7 @@ const ErrorBookPage: React.FC<ErrorBookPageProps> = ({ errorBook, units, onBack,
             </svg>
             返回
           </button>
-          <h1 className="text-lg font-bold bg-gradient-to-r from-[#F8A5D1] to-[#FF85A2] bg-clip-text text-transparent">
+          <h1 className="text-lg font-bold text-primary-gradient">
             错题本
           </h1>
           <button
@@ -66,20 +66,20 @@ const ErrorBookPage: React.FC<ErrorBookPageProps> = ({ errorBook, units, onBack,
       <main className="container mx-auto px-4 py-8 page-transition">
         <div className="card practice-card mb-8">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-[18px] bg-gradient-to-r from-[#FFA8A8] to-[#FF8C8C] flex items-center justify-center">
+            <div className="w-10 h-10 rounded-[18px] bg-gradient-to-r from-[#4A6FA5] to-[#6B8FC7] flex items-center justify-center">
               <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h2 className="text-xl font-semibold text-[#6B5063]">筛选错题</h2>
+            <h2 className="text-xl font-semibold" style={{ color: 'var(--text-primary)' }}>筛选错题</h2>
           </div>
           <div className="flex flex-wrap gap-3">
             <button
               onClick={() => setSelectedUnit('all')}
               className={`px-5 py-2 rounded-full transition-all duration-300 ${
                 selectedUnit === 'all' 
-                  ? 'bg-gradient-to-r from-[#F8A5D1] to-[#FF85A2] text-white shadow-md' 
-                  : 'bg-white border-2 border-[#F8A5D1]/30 text-[#6B5063] hover:border-[#F8A5D1] hover:bg-[#FFF5F8]'
+                  ? 'bg-gradient-to-r from-[#4A6FA5] to-[#6B8FC7] text-white shadow-md' 
+                  : 'bg-white border-2 border-[#4A6FA5]/30 text-[#334155] hover:border-[#4A6FA5] hover:bg-[#F1F5F9]'
               }`}
             >
               全部
@@ -90,8 +90,8 @@ const ErrorBookPage: React.FC<ErrorBookPageProps> = ({ errorBook, units, onBack,
                 onClick={() => setSelectedUnit(unit.id)}
                 className={`px-5 py-2 rounded-full transition-all duration-300 ${
                   selectedUnit === unit.id 
-                    ? 'bg-gradient-to-r from-[#F8A5D1] to-[#FF85A2] text-white shadow-md' 
-                    : 'bg-white border-2 border-[#F8A5D1]/30 text-[#6B5063] hover:border-[#F8A5D1] hover:bg-[#FFF5F8]'
+                    ? 'bg-gradient-to-r from-[#4A6FA5] to-[#6B8FC7] text-white shadow-md' 
+                    : 'bg-white border-2 border-[#4A6FA5]/30 text-[#334155] hover:border-[#4A6FA5] hover:bg-[#F1F5F9]'
                 }`}
               >
                 {unit.title}
@@ -102,13 +102,13 @@ const ErrorBookPage: React.FC<ErrorBookPageProps> = ({ errorBook, units, onBack,
 
         {errorBook.length === 0 ? (
           <div className="card practice-card text-center py-16">
-            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-[#FFF5F8] flex items-center justify-center">
-              <svg className="w-10 h-10 text-[#F8A5D1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-[#F1F5F9] flex items-center justify-center">
+              <svg className="w-10 h-10 text-[#6B8FC7]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 className="text-xl font-semibold text-[#6B5063] mb-2">暂无错题</h3>
-            <p className="text-[#8A6F81]">继续练习，错题会自动添加到这里</p>
+            <h3 className="text-xl font-semibold text-[#334155] mb-2">暂无错题</h3>
+            <p className="text-[#64748B]">继续练习，错题会自动添加到这里</p>
           </div>
         ) : (
           <div className="space-y-6">
@@ -118,12 +118,12 @@ const ErrorBookPage: React.FC<ErrorBookPageProps> = ({ errorBook, units, onBack,
               return (
                 <div key={unitId} className="card practice-card">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-10 rounded-[18px] bg-gradient-to-r from-[#F8A5D1] to-[#FF85A2] flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-[18px] bg-gradient-to-r from-[#4A6FA5] to-[#6B8FC7] flex items-center justify-center">
                       <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                       </svg>
                     </div>
-                    <h3 className="text-lg font-semibold text-[#6B5063]">{unit?.title}</h3>
+                    <h3 className="text-lg font-semibold text-[#334155]">{unit?.title}</h3>
                   </div>
                   <div className="space-y-4">
                     {errors && errors.map((error, index) => {
@@ -131,14 +131,14 @@ const ErrorBookPage: React.FC<ErrorBookPageProps> = ({ errorBook, units, onBack,
                       return (
                         <div 
                           key={errorId} 
-                          className="p-6 bg-[#FFD6D6]/40 rounded-[24px] border-2 border-[#FFA8A8]/40 scale-in"
+                          className="p-6 bg-[#E2E8F0]/40 rounded-[24px] border-2 border-[#94A3B8]/40 scale-in"
                           style={{ animationDelay: `${index * 0.1}s` }}
                         >
                           <div className="flex justify-between items-start mb-4">
-                            <p className="flex-1 text-[#6B5063]">{error.question}</p>
+                            <p className="flex-1 text-[#334155]">{error.question}</p>
                             <button
                               onClick={() => onDeleteError(errorId)}
-                              className="text-[#FFA8A8] hover:text-[#FF8C8C] transition-colors ml-4"
+                              className="text-[#94A3B8] hover:text-[#64748B] transition-colors ml-4"
                             >
                               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -147,17 +147,17 @@ const ErrorBookPage: React.FC<ErrorBookPageProps> = ({ errorBook, units, onBack,
                           </div>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <div className="p-4 bg-white rounded-[18px]">
-                              <span className="text-sm text-[#8A6F81]">你的答案：</span>
-                              <span className="text-[#8A4A4A] ml-2 font-medium">{error.userAnswer || '(未填写)'}</span>
+                              <span className="text-sm text-[#64748B]">你的答案：</span>
+                              <span className="text-[#64748B] ml-2 font-medium">{error.userAnswer || '(未填写)'}</span>
                             </div>
                             <div className="p-4 bg-white rounded-[18px]">
-                              <span className="text-sm text-[#8A6F81]">正确答案：</span>
-                              <span className="text-[#3A6960] ml-2 font-medium">{error.correctAnswer}</span>
+                              <span className="text-sm text-[#64748B]">正确答案：</span>
+                              <span className="text-[#4A6FA5] ml-2 font-medium">{error.correctAnswer}</span>
                             </div>
                           </div>
                           <div className="p-4 bg-white rounded-[18px] mb-4">
-                            <p className="text-sm font-medium text-[#6B5063] mb-2">解析：</p>
-                            <p className="text-[#8A6F81]">{error.explanation}</p>
+                            <p className="text-sm font-medium text-[#334155] mb-2">解析：</p>
+                            <p className="text-[#64748B]">{error.explanation}</p>
                           </div>
                           <button className="btn-secondary text-sm btn-press">
                             重做此题

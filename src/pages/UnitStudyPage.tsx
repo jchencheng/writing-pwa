@@ -11,7 +11,7 @@ interface UnitStudyPageProps {
 
 const UnitStudyPage: React.FC<UnitStudyPageProps> = ({ unit, onStartPractice, onBack, darkMode, onToggleDarkMode }) => {
   return (
-    <div className="min-h-screen app-container">
+    <div className="min-h-screen app-container relative z-10">
       <header className="glass-nav sticky top-0 z-40">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <button
@@ -23,7 +23,7 @@ const UnitStudyPage: React.FC<UnitStudyPageProps> = ({ unit, onStartPractice, on
             </svg>
             返回
           </button>
-          <h1 className="text-lg font-bold bg-gradient-to-r from-[#F8A5D1] to-[#FF85A2] bg-clip-text text-transparent">
+          <h1 className="text-lg font-bold text-primary-gradient">
             {unit.title}
           </h1>
           <button
@@ -47,15 +47,15 @@ const UnitStudyPage: React.FC<UnitStudyPageProps> = ({ unit, onStartPractice, on
       <main className="container mx-auto px-4 py-8 page-transition">
         <div className="card practice-card mb-8">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-12 h-12 rounded-[18px] bg-gradient-to-r from-[#F8A5D1] to-[#FF85A2] flex items-center justify-center">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#4A6FA5] to-[#6B8FC7] flex items-center justify-center shadow-lg">
               <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
               </svg>
             </div>
-            <h2 className="text-xl font-semibold text-[#6B5063]">学习准备</h2>
+            <h2 className="text-xl font-semibold">学习准备</h2>
           </div>
           
-          <p className="text-[#8A6F81] mb-8 text-lg">
+          <p className="mb-8 text-lg" style={{ color: 'var(--text-secondary)' }}>
             在开始练习之前，请先学习以下词组和表达，它们将在本单元的练习中出现。
           </p>
           
@@ -64,28 +64,28 @@ const UnitStudyPage: React.FC<UnitStudyPageProps> = ({ unit, onStartPractice, on
               unit.phrases.map((phrase, index) => (
                 <div 
                   key={index} 
-                  className="phrase-card p-6 rounded-[24px] scale-in"
+                  className="phrase-card p-6 rounded-[20px] scale-in"
                   style={{ animationDelay: `${index * 0.05}s` }}
                 >
-                  <p className="text-xl font-semibold text-[#6B5063] mb-2">{phrase.english}</p>
-                  <p className="text-[#8A6F81]">{phrase.chinese}</p>
+                  <p className="text-xl font-semibold mb-2">{phrase.english}</p>
+                  <p style={{ color: 'var(--text-secondary)' }}>{phrase.chinese}</p>
                 </div>
               ))
             ) : (
-              <div className={`p-6 rounded-[24px] border-2 border-[#F8A5D1]/20 ${darkMode ? 'bg-gray-800' : 'bg-[#FFF5F8]'}`}>
-                <p className={darkMode ? 'text-gray-300' : 'text-[#8A6F81]'}>本单元暂无学习词组</p>
+              <div className="p-6 rounded-[20px] border-2" style={{ backgroundColor: 'var(--input-bg)', borderColor: 'var(--border)' }}>
+                <p style={{ color: 'var(--text-secondary)' }}>本单元暂无学习词组</p>
               </div>
             )}
           </div>
           
-          <div className="p-6 bg-gradient-to-br from-[#F8A5D1]/15 to-[#FF85A2]/15 rounded-[24px] border-2 border-[#F8A5D1]/30 mb-8">
+          <div className="p-6 bg-gradient-to-br from-[#4A6FA5]/15 to-[#6B8FC7]/8 rounded-[20px] border-2 border-[#4A6FA5]/20 mb-8">
             <div className="flex items-center gap-2 mb-3">
-              <svg className="w-5 h-5 text-[#F8A5D1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 text-[#4A6FA5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <h3 className="font-semibold text-[#6B5063]">单元说明</h3>
+              <h3 className="font-semibold">单元说明</h3>
             </div>
-            <p className="text-[#8A6F81]">{unit.description}</p>
+            <p style={{ color: 'var(--text-secondary)' }}>{unit.description}</p>
           </div>
           
           <div className="flex justify-center">

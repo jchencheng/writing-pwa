@@ -54,7 +54,6 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
         const jsonString = event.target?.result as string;
         const data = JSON.parse(jsonString);
 
-        // 验证数据格式 - 至少要有一种数据
         const hasValidData = (
           (data.userAnswers && Array.isArray(data.userAnswers)) ||
           (data.errorBook && Array.isArray(data.errorBook)) ||
@@ -80,7 +79,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
   };
 
   return (
-    <div className="min-h-screen app-container">
+    <div className="min-h-screen app-container relative z-10">
       <header className="glass-nav sticky top-0 z-40">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <button
@@ -92,7 +91,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
             </svg>
             返回
           </button>
-          <h1 className="text-lg font-bold bg-gradient-to-r from-[#F8A5D1] to-[#FF85A2] bg-clip-text text-transparent">
+          <h1 className="text-lg font-bold text-primary-gradient">
             设置
           </h1>
           <button
@@ -116,23 +115,23 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
       <main className="container mx-auto px-4 py-8 page-transition max-w-4xl">
         <div className="card practice-card mb-8">
           <div className="flex items-center gap-3 mb-8">
-            <div className="w-12 h-12 rounded-[18px] bg-gradient-to-r from-[#F8A5D1] to-[#FF85A2] flex items-center justify-center">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#57B975] to-[#6ECF8B] flex items-center justify-center shadow-lg">
               <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
             </div>
-            <h2 className="text-xl font-semibold text-[#6B5063]">学习记录管理</h2>
+            <h2 className="text-xl font-semibold">学习记录管理</h2>
           </div>
 
           <div className="mb-8">
             <div className="flex items-center gap-2 mb-3">
-              <svg className="w-5 h-5 text-[#F8A5D1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 text-[#57B975]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
               </svg>
-              <h3 className="text-lg font-medium text-[#6B5063]">导出学习记录</h3>
+              <h3 className="text-lg font-medium">导出学习记录</h3>
             </div>
-            <p className="text-[#8A6F81] mb-4">导出所有学习记录，包括答题历史、错题本和练习进度。</p>
+            <p className="mb-4" style={{ color: 'var(--text-secondary)' }}>导出所有学习记录，包括答题历史、错题本和练习进度。</p>
             <button
               onClick={handleExport}
               className="btn-primary btn-press flex items-center gap-2"
@@ -146,12 +145,12 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
 
           <div className="mb-8">
             <div className="flex items-center gap-2 mb-3">
-              <svg className="w-5 h-5 text-[#F8A5D1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 text-[#57B975]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
               </svg>
-              <h3 className="text-lg font-medium text-[#6B5063]">导入学习记录</h3>
+              <h3 className="text-lg font-medium">导入学习记录</h3>
             </div>
-            <p className="text-[#8A6F81] mb-4">导入之前导出的学习记录文件，会覆盖当前的所有数据。</p>
+            <p className="mb-4" style={{ color: 'var(--text-secondary)' }}>导入之前导出的学习记录文件，会覆盖当前的所有数据。</p>
             <div className="flex items-center">
               <input
                 type="file"
@@ -172,40 +171,40 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
             </div>
             
             {importError && (
-              <div className="mt-4 p-4 bg-[#FFD6D6]/50 rounded-[24px] border-2 border-[#FFA8A8]/50 text-[#8A4A4A]">
+              <div className="mt-4 p-4 rounded-[20px] border-2" style={{ backgroundColor: 'var(--error-light)', borderColor: 'var(--error)', color: '#7F1D1D' }}>
                 {importError}
               </div>
             )}
             
             {importSuccess && (
-              <div className="mt-4 p-4 bg-[#D5F4EE]/70 rounded-[24px] border-2 border-[#B4E4D8]/70 text-[#3A6960]">
+              <div className="mt-4 p-4 rounded-[20px] border-2" style={{ backgroundColor: 'var(--success-light)', borderColor: 'var(--success)', color: '#166534' }}>
                 数据导入成功！
               </div>
             )}
           </div>
 
-          <div className={`p-6 rounded-[24px] border-2 border-[#F8A5D1]/30 ${darkMode ? 'bg-gray-800' : 'bg-[#FFF5F8]'}`}>
+          <div className={`p-6 rounded-[20px] border-2 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-[#F3F4F6] border-gray-200'}`}>
             <div className="flex items-center gap-2 mb-3">
-              <svg className="w-5 h-5 text-[#F8A5D1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 text-[#57B975]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <h3 className={`text-sm font-medium ${darkMode ? 'text-white' : 'text-[#6B5063]'}`}>数据说明</h3>
+              <h3 className="font-medium">数据说明</h3>
             </div>
-            <ul className={`text-sm space-y-2 ${darkMode ? 'text-gray-300' : 'text-[#8A6F81]'}`}>
+            <ul className="text-sm space-y-2" style={{ color: 'var(--text-secondary)' }}>
               <li className="flex items-start gap-2">
-                <span className="text-[#F8A5D1]">•</span>
+                <span className="text-[#57B975]">•</span>
                 <span>学习记录包括：答题历史、错题本和练习进度</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-[#F8A5D1]">•</span>
+                <span className="text-[#57B975]">•</span>
                 <span>导出的文件为JSON格式，可以备份到其他设备</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-[#F8A5D1]">•</span>
+                <span className="text-[#57B975]">•</span>
                 <span>导入数据会覆盖当前的所有学习记录</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-[#F8A5D1]">•</span>
+                <span className="text-[#57B975]">•</span>
                 <span>建议定期导出数据，以防止数据丢失</span>
               </li>
             </ul>
@@ -214,15 +213,15 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
 
         <div className="card practice-card">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-[18px] bg-gradient-to-r from-[#B4E4D8] to-[#9DDACD] flex items-center justify-center">
-              <svg className="w-5 h-5 text-[#3A6960]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#22C55E] to-[#16A34A] flex items-center justify-center shadow-lg">
+              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h2 className="text-xl font-semibold text-[#6B5063]">关于</h2>
+            <h2 className="text-xl font-semibold">关于</h2>
           </div>
-          <p className="text-[#8A6F81] mb-4">英语写作练习是一个帮助用户通过填空练习强化英语短语与单词记忆的应用。</p>
-          <p className="text-[#8A6F81]">版本：1.0.0</p>
+          <p className="mb-4" style={{ color: 'var(--text-secondary)' }}>英语写作练习是一个帮助用户通过填空练习强化英语短语与单词记忆的应用。</p>
+          <p style={{ color: 'var(--text-secondary)' }}>版本：1.0.0</p>
         </div>
       </main>
     </div>
