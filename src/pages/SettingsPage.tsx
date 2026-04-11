@@ -7,7 +7,12 @@ interface SettingsPageProps {
   practiceProgress: { [unitId: string]: number };
   customUnits: PracticeUnit[];
   onBack: () => void;
-  onImportData: (data: any) => void;
+  onImportData: (data: {
+    userAnswers?: UserAnswer[];
+    errorBook?: UserAnswer[];
+    practiceProgress?: { [unitId: string]: number };
+    customUnits?: PracticeUnit[];
+  }) => void;
   darkMode: boolean;
   onToggleDarkMode: () => void;
 }
@@ -68,7 +73,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
         onImportData(data);
         setImportSuccess(true);
         setImportError(null);
-        
+
         setTimeout(() => setImportSuccess(false), 3000);
       } catch (error) {
         setImportError('导入失败：' + (error as Error).message);
@@ -79,79 +84,92 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
   };
 
   return (
-    <div className="min-h-screen app-container relative z-10">
-      <header className="glass-nav sticky top-0 z-40">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <button
-            onClick={onBack}
-            className="btn-secondary flex items-center gap-2 text-sm"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-            返回
-          </button>
-          <h1 className="text-lg font-bold text-primary-gradient">
-            设置
-          </h1>
-          <button
-            onClick={onToggleDarkMode}
-            className="btn-secondary flex items-center gap-2 text-sm px-4 py-2"
-            title={darkMode ? "切换到浅色模式" : "切换到深色模式"}
-          >
-            {darkMode ? (
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+    <div className="min-h-screen" style={{ backgroundColor: 'var(--background)' }}>
+      {/* Header */}
+      <header className="navbar">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+          <div className="flex items-center justify-between h-16">
+            <button
+              onClick={onBack}
+              className="btn btn-secondary btn-sm"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
-            ) : (
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-              </svg>
-            )}
-          </button>
+              返回
+            </button>
+
+            <h1 className="text-lg font-semibold" style={{ color: 'var(--text-primary)' }}>设置</h1>
+
+            <button
+              onClick={onToggleDarkMode}
+              className="icon-btn"
+            >
+              {darkMode ? (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              ) : (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+              )}
+            </button>
+          </div>
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8 page-transition max-w-4xl">
-        <div className="card practice-card mb-8">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#57B975] to-[#6ECF8B] flex items-center justify-center shadow-lg">
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+      {/* Main Content */}
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8 page-transition">
+        {/* Data Management */}
+        <div className="card p-6 mb-6">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ backgroundColor: 'var(--primary-soft)' }}>
+              <svg className="w-6 h-6" style={{ color: 'var(--primary)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
             </div>
-            <h2 className="text-xl font-semibold">学习记录管理</h2>
+            <div>
+              <h2 className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>学习记录管理</h2>
+              <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>导出或导入你的学习数据</p>
+            </div>
           </div>
 
-          <div className="mb-8">
+          {/* Export */}
+          <div className="mb-6">
             <div className="flex items-center gap-2 mb-3">
-              <svg className="w-5 h-5 text-[#57B975]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5" style={{ color: 'var(--primary)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
               </svg>
-              <h3 className="text-lg font-medium">导出学习记录</h3>
+              <h3 className="font-semibold" style={{ color: 'var(--text-primary)' }}>导出学习记录</h3>
             </div>
-            <p className="mb-4" style={{ color: 'var(--text-secondary)' }}>导出所有学习记录，包括答题历史、错题本和练习进度。</p>
+            <p className="text-sm mb-4" style={{ color: 'var(--text-secondary)' }}>
+              导出所有学习记录，包括答题历史、错题本和练习进度。
+            </p>
             <button
               onClick={handleExport}
-              className="btn-primary btn-press flex items-center gap-2"
+              className="btn btn-primary"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
               </svg>
               导出数据
             </button>
           </div>
 
-          <div className="mb-8">
+          {/* Import */}
+          <div className="mb-6">
             <div className="flex items-center gap-2 mb-3">
-              <svg className="w-5 h-5 text-[#57B975]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5" style={{ color: 'var(--primary)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
               </svg>
-              <h3 className="text-lg font-medium">导入学习记录</h3>
+              <h3 className="font-semibold" style={{ color: 'var(--text-primary)' }}>导入学习记录</h3>
             </div>
-            <p className="mb-4" style={{ color: 'var(--text-secondary)' }}>导入之前导出的学习记录文件，会覆盖当前的所有数据。</p>
-            <div className="flex items-center">
+            <p className="text-sm mb-4" style={{ color: 'var(--text-secondary)' }}>
+              导入之前导出的学习记录文件，会覆盖当前的所有数据。
+            </p>
+            <div className="flex items-center gap-3">
               <input
                 type="file"
                 accept=".json"
@@ -161,67 +179,68 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
               />
               <label
                 htmlFor="file-input"
-                className="btn-secondary cursor-pointer flex items-center gap-2 btn-press"
+                className="btn btn-secondary cursor-pointer"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                 </svg>
                 选择文件
               </label>
             </div>
-            
+
             {importError && (
-              <div className="mt-4 p-4 rounded-[20px] border-2" style={{ backgroundColor: 'var(--error-light)', borderColor: 'var(--error)', color: '#7F1D1D' }}>
-                {importError}
+              <div className="mt-4 p-4 rounded-xl" style={{ backgroundColor: 'var(--error-soft)', border: '1px solid var(--error-200)' }}>
+                <p className="text-sm" style={{ color: 'var(--error)' }}>{importError}</p>
               </div>
             )}
-            
+
             {importSuccess && (
-              <div className="mt-4 p-4 rounded-[20px] border-2" style={{ backgroundColor: 'var(--success-light)', borderColor: 'var(--success)', color: '#166534' }}>
-                数据导入成功！
+              <div className="mt-4 p-4 rounded-xl" style={{ backgroundColor: 'var(--success-soft)', border: '1px solid var(--success-200)' }}>
+                <p className="text-sm" style={{ color: 'var(--success)' }}>数据导入成功！</p>
               </div>
             )}
           </div>
 
-          <div className={`p-6 rounded-[20px] border-2 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-[#F3F4F6] border-gray-200'}`}>
-            <div className="flex items-center gap-2 mb-3">
-              <svg className="w-5 h-5 text-[#57B975]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          {/* Info */}
+          <div className="p-4 rounded-xl" style={{ backgroundColor: 'var(--surface-hover)' }}>
+            <div className="flex items-start gap-3">
+              <svg className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: 'var(--info)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <h3 className="font-medium">数据说明</h3>
+              <div>
+                <p className="font-medium mb-2" style={{ color: 'var(--text-primary)' }}>数据说明</p>
+                <ul className="text-sm space-y-1" style={{ color: 'var(--text-secondary)' }}>
+                  <li>• 学习记录包括：答题历史、错题本和练习进度</li>
+                  <li>• 导出的文件为JSON格式，可以备份到其他设备</li>
+                  <li>• 导入数据会覆盖当前的所有学习记录</li>
+                  <li>• 建议定期导出数据，以防止数据丢失</li>
+                </ul>
+              </div>
             </div>
-            <ul className="text-sm space-y-2" style={{ color: 'var(--text-secondary)' }}>
-              <li className="flex items-start gap-2">
-                <span className="text-[#57B975]">•</span>
-                <span>学习记录包括：答题历史、错题本和练习进度</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-[#57B975]">•</span>
-                <span>导出的文件为JSON格式，可以备份到其他设备</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-[#57B975]">•</span>
-                <span>导入数据会覆盖当前的所有学习记录</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-[#57B975]">•</span>
-                <span>建议定期导出数据，以防止数据丢失</span>
-              </li>
-            </ul>
           </div>
         </div>
 
-        <div className="card practice-card">
+        {/* About */}
+        <div className="card p-6">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#22C55E] to-[#16A34A] flex items-center justify-center shadow-lg">
-              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ backgroundColor: 'var(--accent-soft)' }}>
+              <svg className="w-6 h-6" style={{ color: 'var(--accent)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h2 className="text-xl font-semibold">关于</h2>
+            <div>
+              <h2 className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>关于</h2>
+              <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>English Writing Practice</p>
+            </div>
           </div>
-          <p className="mb-4" style={{ color: 'var(--text-secondary)' }}>英语写作练习是一个帮助用户通过填空练习强化英语短语与单词记忆的应用。</p>
-          <p style={{ color: 'var(--text-secondary)' }}>版本：1.0.0</p>
+          <p className="mb-4" style={{ color: 'var(--text-secondary)' }}>
+            通过填空练习强化英语短语与单词记忆的应用。
+          </p>
+          <div className="flex items-center gap-4 text-sm" style={{ color: 'var(--text-tertiary)' }}>
+            <span>版本 1.0.0</span>
+            <span>•</span>
+            <span>PWA 应用</span>
+          </div>
         </div>
       </main>
     </div>

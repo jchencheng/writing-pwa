@@ -7,15 +7,16 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#2563eb',
-        secondary: '#f97316',
+        primary: '#0EA5E9',
+        secondary: '#EC4899',
         neutral: {
-          light: '#f8fafc',
-          dark: '#1e293b',
+          light: '#F8FAFC',
+          dark: '#0F172A',
         },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['Nunito Sans', 'system-ui', 'sans-serif'],
+        serif: ['Merriweather', 'Georgia', 'serif'],
       },
     },
   },

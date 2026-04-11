@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Nunito+Sans:wght@400;500;600;700;800&display=swap');
 
 .app-container {
   min-height: 100vh;
@@ -13,50 +13,50 @@
   right: 0;
   bottom: 0;
   background: 
-    radial-gradient(ellipse at 20% 20%, rgba(74, 111, 165, 0.06) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 80%, rgba(74, 111, 165, 0.03) 0%, transparent 50%);
+    radial-gradient(ellipse at 15% 15%, rgba(14, 165, 233, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 85%, rgba(236, 72, 153, 0.06) 0%, transparent 50%);
   pointer-events: none;
   z-index: 0;
 }
 
 .page-transition {
-  animation: fadeInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .practice-card {
   background: var(--card-bg);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(0, 0, 0, 0.03);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  border: 1px solid rgba(15, 23, 42, 0.03);
 }
 
 .practice-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
 }
 
 .success-badge {
-  background: #5B8C5A;
-  box-shadow: 0 2px 8px rgba(91, 140, 90, 0.2);
+  background: var(--success);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);
 }
 
 .error-badge {
-  background: #C15C5C;
-  box-shadow: 0 2px 8px rgba(193, 92, 92, 0.2);
+  background: var(--error);
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25);
 }
 
 .phrase-card {
   background: var(--card-bg);
-  border: 1px solid rgba(0, 0, 0, 0.03);
-  transition: all 0.2s ease;
+  border: 1px solid rgba(15, 23, 42, 0.03);
+  transition: all 0.25s ease;
 }
 
 .phrase-card:hover {
   border-color: var(--primary);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(74, 111, 165, 0.1);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(14, 165, 233, 0.15);
 }
 
 .progress-glow {
-  box-shadow: 0 0 12px rgba(74, 111, 165, 0.2);
+  box-shadow: 0 0 16px rgba(14, 165, 233, 0.3);
 }
 
 .btn-press:active {
@@ -64,17 +64,17 @@
 }
 
 .nav-icon {
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
 }
 
 .nav-icon:hover {
-  transform: scale(1.08);
+  transform: scale(1.1);
   color: var(--primary);
 }
 
 .sentence-blank {
   font-size: 1.125rem;
-  line-height: 1.6;
+  line-height: 1.7;
 }
 
 .stat-number {
@@ -82,9 +82,9 @@
 }
 
 .decorative-dot {
-  width: 4px;
-  height: 4px;
-  background-color: var(--primary);
+  width: 5px;
+  height: 5px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
   border-radius: 50%;
   display: inline-block;
 }
@@ -92,7 +92,7 @@
 @media (max-width: 640px) {
   .sentence-blank {
     font-size: 1rem;
-    line-height: 1.6;
+    line-height: 1.7;
   }
 }
 
